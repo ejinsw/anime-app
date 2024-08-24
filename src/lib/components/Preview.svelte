@@ -26,4 +26,7 @@
 	>
 		{anime.node.title}
 	</div>
+	<span
+		class="absolute left-0 bottom-0 w-full h-1 bg-gradient-to-r from-blue-400 to-purple-600 rounded-full invisible group-hover:visible transition-all duration-100"
+	></span>
 </div>

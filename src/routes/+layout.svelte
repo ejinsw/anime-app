@@ -48,6 +48,8 @@
 	<div>{user.name}</div>
 {/if}
 
-<slot />
+<main class="p-4">
+	<slot />
+</main>
 
 <NavBar {user} />

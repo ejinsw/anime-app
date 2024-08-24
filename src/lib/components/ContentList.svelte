@@ -3,26 +3,50 @@
 	import Preview from '$lib/components/Preview.svelte';
 	import { onMount } from 'svelte';
 
+	import IcRoundChevronLeft from '~icons/ic/round-chevron-left';
+	import IcRoundChevronRight from '~icons/ic/round-chevron-right';
+
 	export let title: string = '';
 	export let anime: AnimePreview[];
+	export let prev: () => void;
+	export let next: () => void;
 
-    let shimmerAnimation = false;
+	let shimmerAnimation = false;
 
-    onMount(() => {
-        setInterval(() => {
-            shimmerAnimation = true;
-            setTimeout(() => {
-                shimmerAnimation = false;
-            }, 2000)
-        }, 10000)
-    })
+	onMount(() => {
+		setInterval(() => {
+			shimmerAnimation = true;
+			setTimeout(() => {
+				shimmerAnimation = false;
+			}, 2000);
+		}, 10000);
+	});
 </script>
 
 <div class="w-full">
-	<h1 class="text-3xl font-semibold tracking-tight text-gray-100 mb-4 relative inline-block animate-fade-in">
-		{title}
-		<span class="absolute left-0 bottom-0 w-full h-1 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full {shimmerAnimation && "shimmer"}"></span>
-	</h1>
+	<div class="flex items-center">
+		<h1
+			class="text-3xl font-semibold tracking-tight text-gray-100 mb-4 relative inline-block animate-fade-in"
+		>
+			{title}
+			<span
+				class="absolute left-0 bottom-0 w-full h-1 bg-gradient-to-r from-slate-400 to-slate-500 rounded-full {shimmerAnimation &&
+					'shimmer'}"
+			></span>
+		</h1>
+		<span class="ml-auto">
+			<button
+				on:click={prev}
+				class="bg-slate-50 text-gray-800 rounded-full text-center p-1 hover:bg-slate-200"
+				><IcRoundChevronLeft /></button
+			>
+			<button
+				on:click={next}
+				class="bg-slate-50 text-gray-800 rounded-full text-center p-1 hover:bg-slate-200"
+				><IcRoundChevronRight /></button
+			>
+		</span>
+	</div>
 	<nav class="flex overflow-x-auto w-full space-x-4 pb-2">
 		{#if anime}
 			{#each anime as item}
