@@ -4,8 +4,8 @@
 	import { onMount } from 'svelte';
 
 	import IcRoundChevronLeft from '~icons/ic/round-chevron-left';
-	import IcRoundChevronRight from '~icons/ic/round-chevron-right';
-
+	import IcRoundChevronRight from '~icons/ic/round-chevron-right'; 
+ 
 	export let title: string = '';
 	export let anime: AnimePreview[];
 	export let prev: () => void;
