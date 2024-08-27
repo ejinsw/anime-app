@@ -46,23 +46,53 @@ export function mediaTypeFormatted(mediaType: string) {
 	}
 }
 
-export function scoreToColor(score: number) {
+export function ratingFormatted(rating: string) {
+	switch (rating) {
+		case 'g':
+			return 'G';
+		case 'pg':
+			return 'PG';
+		case 'pg_13':
+			return 'PG-13';
+		case 'r':
+		case 'r+':
+		case 'rx':
+			return 'R18';
+		default:
+			return '?';
+	}
+}
+
+export function statusFormatted(status: string) {
+	switch (status) {
+		case 'finished_airing':
+			return 'Finished Airing';
+		case 'currently_airing':
+			return 'Currently Airing';
+		case 'not_yet_aired':
+			return 'Not Yet Aired';
+		default:
+			return '?';
+	}
+}
+
+export function scoreToColor(score: number, extension: string = 'text-') {
 	switch (score) {
 		case 1:
 		case 2:
 		case 3:
-			return 'text-red-500';
+			return extension + 'red-500';
 		case 4:
 		case 5:
 		case 6:
-			return 'text-orange-400';
+			return extension + 'orange-400';
 		case 7:
 		case 8:
-			return 'text-green-400';
+			return extension + 'green-400';
 		case 9:
 		case 10:
-			return 'text-green-500';
+			return extension + 'green-500';
 		default:
-			return 'text-red-400';
+			return extension + 'red-400';
 	}
 }
