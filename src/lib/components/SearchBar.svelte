@@ -116,7 +116,7 @@
 				class="mt-4 w-full h-fit max-h-96 overflow-auto rounded-lg bg-neutral-900 p-4 shadow-lg absolute top-8"
 			>
 				<h3 class="text-white text-lg mb-2">Search Results</h3>
-				<div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+				<div class="flex flex-col">
 					{#each results as result (result.node.id)}
 						<Preview variant="list" anime={result} />
 					{/each}

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import LoginButton from '$lib/components/LoginButton.svelte';
-	import SearchBar from './SearchBar.svelte';
+	import SearchBar from '$lib/components/SearchBar.svelte';
 
 	export let user;
 </script>

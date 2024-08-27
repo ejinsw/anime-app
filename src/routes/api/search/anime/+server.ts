@@ -11,7 +11,7 @@ export const GET: RequestHandler = async ({ fetch, url }) => {
 
 	try {
 		const res = await fetch(
-			`https://api.myanimelist.net/v2/anime?q=${query}&limit=20`,
+			`https://api.myanimelist.net/v2/anime?q=${query}&limit=20&fields=start_date,end_date,synopsis,mean,rank,popularity,nsfw,media_type,status,num_episodes,rating,alternative_titles,genres`,
 			{
 				method: 'GET',
 				headers: {

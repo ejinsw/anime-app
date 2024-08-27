@@ -28,7 +28,7 @@ export function mediaTypeFormatted(mediaType: string) {
 		case 'unknown':
 			return '?';
 		case 'tv':
-			return 'TV';
+			return 'TV Series';
 		case 'ova':
 			return 'OVA';
 		case 'movie':

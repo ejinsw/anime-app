@@ -6,21 +6,22 @@
 	import { createTooltip, melt } from '@melt-ui/svelte';
 	import { fade } from 'svelte/transition';
 	import { noop } from '@melt-ui/svelte/internal/helpers';
+	import clsx from 'clsx';
 
 	export let variant: 'card' | 'long' | 'list' = 'card';
 	export let anime: AnimeDetail;
-	export let size: 'sm' | 'md' | 'lg' = 'md'; // Default size is 'md'
+	export let size: 'sm' | 'md' | 'lg' = 'lg'; // Default size is 'md'
 
 	let sizeClasses = {
-		sm: 'w-32',
-		md: 'w-48',
-		lg: 'w-64'
+		sm: 'w-12',
+		md: 'w-24',
+		lg: 'w-48'
 	};
 
 	let maxImgH = {
-		sm: 'max-h-48',
-		md: 'max-h-64',
-		lg: 'max-h-80'
+		sm: 'h-20',
+		md: 'h-32',
+		lg: 'h-64'
 	};
 
 	const {
@@ -38,7 +39,10 @@
 </script>
 
 {#if variant === 'card'}
-	<div class="flex flex-col min-h-fit h-full {sizeClasses[size]}" use:melt={$trigger}>
+	<div
+		class={clsx(`flex flex-col min-h-fit h-full ${sizeClasses[size]}`, $$props.class)}
+		use:melt={$trigger}
+	>
 		<div
 			class="{`group relative ${maxImgH[size]} flex flex-col rounded-xl overflow-hidden shadow-inner hover:rounded-md transition-all duration-300`}F"
 		>
@@ -105,24 +109,29 @@
 
 		<!-- Title -->
 		<div
-			class="w-full h-fit mt-2 flex items-center justify-center text-white text-center p-2 tracking-tighter leading-tight pointer-events-none"
+			class="w-full h-fit mt-2 flex items-center justify-center text-white text-sm text-center p-2 tracking-tighter leading-tight pointer-events-none"
 		>
 			{anime.node.title}
 		</div>
 	</div>
-
-	<!-- Popup -->
-	{#if $open}
-		<div
-			use:melt={$content}
-			transition:fade={{ duration: 100 }}
-			class="flex flex-col z-10 rounded-lg bg-[#1c1c1c] w-80 shadow-lg bg-opacity-80 backdrop-blur-lg backdrop-saturate-150 p-4 text-sm text-neutral-400"
-		>
-			<div use:melt={$arrow} />
+{:else if variant === 'list'}
+	<div class={clsx(`w-full p-2 flex gap-4 text-sm ${maxImgH['sm']} hover:bg-neutral-800`, $$props.class)}>
+		<div class="{`group relative ${sizeClasses['sm']}`} rounded-lg overflow-hidden">
+			{#if anime.node.main_picture}
+				<img
+					src={anime.node.main_picture.medium}
+					alt={anime.node.title}
+					class="w-full h-full pointer-events-none"
+				/>
+			{/if}
+		</div>
+		<div class="flex flex-col w-full justify-between">
 			<!-- Title -->
-			<h1 class="text-white font-bold text-lg mb-2">{anime.node.title}</h1>
+			<div class="">
+				{anime.node.title}
+			</div>
 			<!-- Tags -->
-			<div class="flex gap-1 text-xs mb-1">
+			<div class="w-full flex gap-1 text-xs mb-1 text-neutral-400">
 				<span class="mr-auto text-sm"
 					>Episodes: {anime.node.num_episodes === 0 ? '?' : anime.node.num_episodes}</span
 				>
@@ -138,71 +147,7 @@
 					{mediaTypeFormatted(anime.node.media_type ?? '')}
 				</span>
 			</div>
-			<!-- Synopsis -->
-			<p class="text-xs mb-2 text-neutral-500">
-				{anime.node.synopsis?.substring(0, 100).trimEnd()}...
-			</p>
-			<!-- Details -->
-			<span class="flex gap-1"
-				><span class="text-neutral-500">Rating:</span><span>
-					{ratingFormatted(anime.node.rating ?? '?')}</span
-				></span
-			>
-			<span class="flex gap-x-1 leading-tight flex-wrap">
-				<span class="text-neutral-500">Synonyms:</span>
-				{#if anime.node.alternative_titles && anime.node.alternative_titles?.synonyms && anime.node.alternative_titles?.synonyms.length > 0}
-					{#each anime.node.alternative_titles?.synonyms as title, i}
-						{#if i < 3}
-							<span>{title}</span>
-						{/if}
-					{/each}
-				{:else if !anime.node.alternative_titles || !anime.node.alternative_titles?.synonyms || anime.node.alternative_titles?.synonyms.length === 0}
-					<span>n/a</span>
-				{/if}
-			</span>
-			<span class="flex gap-1"
-				><span class="text-neutral-500">Score:</span><span> {anime.node.mean ?? '?'}</span></span
-			>
-			<span class="flex gap-1"
-				><span class="text-neutral-500">Date aired:</span>
-				{anime.node.start_date ?? '?'} to {anime.node.end_date ?? '?'}</span
-			>
-			<span class="flex gap-1"
-				><span class="text-neutral-500">Status:</span>{statusFormatted(
-					anime.node.status ?? '?'
-				)}</span
-			>
-			<span class="flex gap-x-1 leading-tight flex-wrap"
-				><span class="text-neutral-500">Genre:</span>
-				{#if anime.node.genres}
-					{#each anime.node.genres as genre}
-						<span>{genre.name}</span>
-					{/each}
-				{/if}
-			</span>
 		</div>
-	{/if}
-{:else if variant === 'list'}
-	<div
-		class="{`group relative ${sizeClasses[size]} rounded-xl overflow-hidden shadow-inner hover:rounded-md transition-all duration-300`}F"
-	>
-		{#if anime.node.main_picture}
-			<img
-				src={anime.node.main_picture.medium}
-				alt={anime.node.title}
-				class="w-full h-full object-cover"
-			/>
-		{/if}
-		<div
-			class="absolute bottom-0 left-0 w-full h-full flex items-center justify-center bg-black/50
-    text-white text-center p-2 tracking-tighter leading-tight opacity-0 group-hover:opacity-100 transition-opacity duration-300
-    pointer-events-none"
-		>
-			{anime.node.title}
-		</div>
-		<span
-			class="absolute left-0 bottom-0 w-full h-1 bg-gradient-to-r from-blue-400 to-purple-600 rounded-full invisible group-hover:visible transition-all duration-100"
-		></span>
 	</div>
 {:else if variant === 'long'}
 	<div
@@ -225,5 +170,77 @@
 		<span
 			class="absolute left-0 bottom-0 w-full h-1 bg-gradient-to-r from-blue-400 to-purple-600 rounded-full invisible group-hover:visible transition-all duration-100"
 		></span>
+	</div>
+{/if}
+
+<!-- Popup -->
+{#if $open}
+	<div
+		use:melt={$content}
+		transition:fade={{ duration: 100 }}
+		class="flex flex-col z-10 rounded-lg bg-[#1c1c1c] w-80 shadow-lg bg-opacity-80 backdrop-blur-lg backdrop-saturate-150 p-4 text-sm text-neutral-400"
+	>
+		<div use:melt={$arrow} />
+		<!-- Title -->
+		<h1 class="text-white font-bold text-lg mb-2">{anime.node.title}</h1>
+		<!-- Tags -->
+		<div class="flex gap-1 text-xs mb-1">
+			<span class="mr-auto text-sm"
+				>Episodes: {anime.node.num_episodes === 0 ? '?' : anime.node.num_episodes}</span
+			>
+			<span
+				class="{scoreToColor(
+					Math.floor(anime.node.mean ?? 0),
+					'bg-'
+				)} text-white px-1 py-[2px] rounded-sm"
+			>
+				{anime.node.mean ?? '?'}
+			</span>
+			<span class="bg-orange-400 text-white px-1 py-[2px] rounded-sm">
+				{mediaTypeFormatted(anime.node.media_type ?? '')}
+			</span>
+		</div>
+		<!-- Synopsis -->
+		<p class="text-xs mb-2 text-neutral-500">
+			{anime.node.synopsis?.substring(0, 100).trimEnd()}...
+		</p>
+		<!-- Details -->
+		<span class="flex gap-1"
+			><span class="text-neutral-500">Rating:</span><span>
+				{ratingFormatted(anime.node.rating ?? '?')}</span
+			></span
+		>
+		<span class="flex gap-x-1 leading-tight flex-wrap">
+			<span class="text-neutral-500">Synonyms:</span>
+			{#if anime.node.alternative_titles && anime.node.alternative_titles?.synonyms && anime.node.alternative_titles?.synonyms.length > 0}
+				{#each anime.node.alternative_titles?.synonyms as title, i}
+					{#if i < 3}
+						<span>{title}</span>
+					{/if}
+				{/each}
+			{:else if !anime.node.alternative_titles || !anime.node.alternative_titles?.synonyms || anime.node.alternative_titles?.synonyms.length === 0}
+				<span>n/a</span>
+			{/if}
+		</span>
+		<span class="flex gap-1"
+			><span class="text-neutral-500">Score:</span><span> {anime.node.mean ?? '?'}</span></span
+		>
+		<span class="flex gap-1"
+			><span class="text-neutral-500">Date aired:</span>
+			{anime.node.start_date ?? '?'} to {anime.node.end_date ?? '?'}</span
+		>
+		<span class="flex gap-1"
+			><span class="text-neutral-500">Status:</span>{statusFormatted(
+				anime.node.status ?? '?'
+			)}</span
+		>
+		<span class="flex gap-x-1 leading-tight flex-wrap"
+			><span class="text-neutral-500">Genre:</span>
+			{#if anime.node.genres}
+				{#each anime.node.genres as genre}
+					<span>{genre.name}</span>
+				{/each}
+			{/if}
+		</span>
 	</div>
 {/if}
