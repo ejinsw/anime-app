@@ -1,14 +1,21 @@
 <script lang="ts">
-	import type { AnimePreview } from '$lib/types';
+	import type { AnimeDetail, AnimeDetail } from '$lib/types';
 	import { createSelect, melt } from '@melt-ui/svelte';
 	import { fade } from 'svelte/transition';
+	import Preview from './Preview.svelte';
+	import OutClick from 'svelte-outclick';
 
 	import MaterialSymbolsCheckSmallRounded from '~icons/material-symbols/check-small-rounded';
 	import MaterialSymbolsKeyboardArrowDownRounded from '~icons/material-symbols/keyboard-arrow-down-rounded';
+	import MdiMagnify from '~icons/mdi/magnify';
+	import { goto } from '$app/navigation';
 
 	let searchQuery = '';
+	let showResults = false;
+	let resultsPane: HTMLElement;
+
 	const options = ['Anime', 'Manga'];
-	let results: AnimePreview[] = []; // State to hold search results
+	let results: AnimeDetail[] = []; // State to hold search results
 
 	const {
 		elements: { trigger, menu, option },
@@ -20,32 +27,36 @@
 			placement: 'bottom-start',
 			fitViewport: true,
 			sameWidth: true
-		},
-		defaultSelected: 'Anime'
+		}
 	});
 
 	$: selectedCategory = $selectedLabel || 'Anime';
 
 	// Fetch search results based on the category and query
 	async function search() {
+		showResults = true;
+		if (searchQuery.length < 3) return;
 		try {
 			if (!searchQuery) {
 				results = []; // Clear results if query is empty
 				return;
 			}
 
+			let res;
 			switch (selectedCategory) {
 				case 'Anime':
 					const animeResponse = await fetch(
 						`/api/search/anime?q=${encodeURIComponent(searchQuery)}`
 					);
-					results = await animeResponse.json();
+					res = await animeResponse.json();
+					results = res.data;
 					break;
 				case 'Manga':
 					const mangaResponse = await fetch(
 						`/api/search/manga?q=${encodeURIComponent(searchQuery)}`
 					);
-					results = await mangaResponse.json();
+					res = await mangaResponse.json();
+					results = res.data;
 					break;
 			}
 		} catch (err) {
@@ -53,7 +64,29 @@
 			results = []; // Handle error by clearing results
 		}
 	}
+
+	function handleKeydown(event: KeyboardEvent) {
+		switch (event.key) {
+			case 'Escape':
+				showResults = false;
+				break;
+			case 'Enter':
+				if (searchQuery.length >= 3) {
+					goto(`/anime?search=${searchQuery}`);
+				}
+				break;
+		}
+	}
 </script>
+
+<OutClick
+	on:outclick={() => {
+		showResults = false;
+	}}
+	excludeElements={resultsPane}
+/>
+
+<svelte:window on:keydown={handleKeydown} />
 
 <div class="relative flex space-x-2 w-full p-2 rounded-lg items-center">
 	<!-- Category Selector Button -->
@@ -67,34 +100,29 @@
 	</button>
 
 	<!-- Search Input -->
-	<div class="relative w-full">
+	<div class="relative w-full" bind:this={resultsPane}>
+		<MdiMagnify class="absolute top-2 left-3 text-neutral-500 text-xl" />
 		<input
 			type="text"
 			placeholder="Search..."
 			bind:value={searchQuery}
 			on:input={search}
-			class="w-full px-4 py-2 border border-neutral-700 rounded-lg bg-neutral-800 text-white placeholder-neutral-500 focus:outline-none focus:ring focus:ring-blue-500"
+			on:focus={() => (showResults = true)}
+			class="w-full pl-12 pr-4 py-2 border border-neutral-700 rounded-lg bg-neutral-800 text-white placeholder-neutral-500 focus:outline-none focus:ring focus:ring-blue-500"
 		/>
-		{#if results.length > 0}
+		{#if showResults && searchQuery && searchQuery.length >= 3 && results.length > 0}
 			<!-- Search Results -->
-			<div class="mt-4 w-full rounded-lg bg-neutral-900 p-4 shadow-lg absolute top-8">
+			<div
+				class="mt-4 w-full h-fit max-h-96 overflow-auto rounded-lg bg-neutral-900 p-4 shadow-lg absolute top-8"
+			>
 				<h3 class="text-white text-lg mb-2">Search Results</h3>
 				<div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-					{#each results as result (result.node.id)}
-						<div class="flex items-start bg-neutral-800 rounded-lg p-3 text-white">
-							<img
-								src={result.node.main_picture.medium}
-								alt={result.node.title}
-								class="w-20 h-28 object-cover rounded-lg mr-4"
-							/>
-							<div>
-								<h4 class="font-semibold">{result.node.title}</h4>
-							</div>
-						</div>
+					{#each results as result (result.id)}
+						<Preview variant="list" anime={result} />
 					{/each}
 				</div>
 			</div>
-		{:else if searchQuery && !results.length}
+		{:else if showResults && searchQuery && searchQuery.length >= 3 && !results.length}
 			<!-- No results found -->
 			<div class="mt-4 w-full rounded-lg bg-neutral-900 p-4 shadow-lg text-white absolute top-8">
 				<p>No results found for "{searchQuery}".</p>

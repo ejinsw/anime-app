@@ -4,7 +4,8 @@ import { json } from '@sveltejs/kit';
 
 export const GET: RequestHandler = async ({ fetch, url }) => {
 	const rankingType = url.searchParams.get('ranking_type') || 'all';
-	const offset = parseInt(url.searchParams.get('offset') || '0', 10);
+	const offset = parseInt(url.searchParams.get('offset') || '0', 10) || 0;
+	const limit = parseInt(url.searchParams.get('limit') || '0', 10) || 5;
 
 	const types = [
 		'all',
@@ -23,7 +24,7 @@ export const GET: RequestHandler = async ({ fetch, url }) => {
 
 	try {
 		const res = await fetch(
-			`https://api.myanimelist.net/v2/anime/ranking?ranking_type=${rankingType}&limit=10&offset=${offset}`,
+			`https://api.myanimelist.net/v2/anime/ranking?ranking_type=${rankingType}&limit=${limit}&offset=${offset}&fields=start_date,end_date,synopsis,mean,rank,popularity,nsfw,media_type,status,num_episodes,rating`,
 			{
 				method: 'GET',
 				headers: {
@@ -37,6 +38,7 @@ export const GET: RequestHandler = async ({ fetch, url }) => {
 		}
 
 		const animeData = await res.json();
+
 		return json(animeData);
 	} catch (err) {
 		console.log('Error retrieving seasonal anime', err);

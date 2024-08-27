@@ -1,6 +1,6 @@
 <script lang="ts">
 	import ContentList from '$lib/components/ContentList.svelte';
-	import type { AnimePreview } from '$lib/types';
+	import type { AnimeDetail } from '$lib/types';
 	import { DateToSeason } from '$lib/utils.js';
 	import { onMount } from 'svelte';
 	const today = new Date();
@@ -19,11 +19,11 @@
 	];
 
 	// Stores for each category's anime data and pagination
-	let seasonalAnime: AnimePreview[] = [];
+	let seasonalAnime: AnimeDetail[] = [];
 	let seasonalPrev: string | null = null;
 	let seasonalNext: string | null = null;
 
-	let rankedAnimeData: Record<string, { anime: AnimePreview[]; prev: string | null; next: string | null }> = {};
+	let rankedAnimeData: Record<string, { anime: AnimeDetail[]; prev: string | null; next: string | null }> = {};
 
 	// Generalized fetch function
 	async function fetchAnime(url: string, type: 'seasonal' | 'ranked', category: string = '') {

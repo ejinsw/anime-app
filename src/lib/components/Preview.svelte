@@ -1,7 +1,7 @@
 <script lang="ts">
-	import type { AnimePreview } from '$lib/types';
+	import type { AnimeDetail } from '$lib/types';
 
-	export let anime: AnimePreview;
+	export let anime: AnimeDetail;
 	export let size: 'sm' | 'md' | 'lg' = 'sm'; // Default size is 'md'
 
 	let sizeClasses = {
@@ -12,13 +12,15 @@
 </script>
 
 <div
-	class={`group relative ${sizeClasses[size]} rounded-xl overflow-hidden shadow-inner hover:rounded-md transition-all duration-300`}
+	class="{`group relative ${sizeClasses[size]} rounded-xl overflow-hidden shadow-inner hover:rounded-md transition-all duration-300`}F"
 >
-	<img
-		src={anime.node.main_picture.medium}
-		alt={anime.node.title}
-		class="w-full h-full object-cover"
-	/>
+	{#if anime.node.main_picture}
+		<img
+			src={anime.node.main_picture.medium}
+			alt={anime.node.title}
+			class="w-full h-full object-cover"
+		/>
+	{/if}
 	<div
 		class="absolute bottom-0 left-0 w-full h-full flex items-center justify-center bg-black/50
     text-white text-center p-2 tracking-tighter leading-tight opacity-0 group-hover:opacity-100 transition-opacity duration-300

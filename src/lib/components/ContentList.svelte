@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { AnimePreview } from '$lib/types';
+	import type { AnimeDetail } from '$lib/types';
 	import Preview from '$lib/components/Preview.svelte';
 	import { onMount } from 'svelte';
 
@@ -7,7 +7,7 @@
 	import IcRoundChevronRight from '~icons/ic/round-chevron-right'; 
  
 	export let title: string = '';
-	export let anime: AnimePreview[];
+	export let anime: AnimeDetail[];
 	export let prev: () => void;
 	export let next: () => void;
 

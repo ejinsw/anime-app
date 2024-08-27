@@ -3,18 +3,15 @@ import type { RequestHandler } from '@sveltejs/kit';
 import { json } from '@sveltejs/kit';
 
 export const GET: RequestHandler = async ({ fetch, url }) => {
-	const year = url.searchParams.get('year');
-	const season = url.searchParams.get('season');
-	const offset = parseInt(url.searchParams.get('offset') || '0', 10) || 0;
-	const limit = parseInt(url.searchParams.get('limit') || '0', 10) || 5;
+	const query = url.searchParams.get('q');
 
-	if (!year || !season) {
+	if (!query) {
 		return new Response('Bad Request: Missing required parameters', { status: 400 });
 	}
 
 	try {
 		const res = await fetch(
-			`https://api.myanimelist.net/v2/anime/season/${year}/${season}?offset=${offset}&limit=${limit}&fields=start_date,end_date,synopsis,mean,rank,popularity,nsfw,media_type,status,num_episodes,rating`,
+			`https://api.myanimelist.net/v2/anime?q=${query}&limit=20`,
 			{
 				method: 'GET',
 				headers: {
@@ -24,8 +21,7 @@ export const GET: RequestHandler = async ({ fetch, url }) => {
 		);
 
 		if (!res.ok) {
-			console.log("Failed to fetch anime data")
-			return new Response('Failed to fetch anime data', { status: res.status });
+			return new Response('Failed to fetch anime list', { status: res.status });
 		}
 
 		const animeData = await res.json();

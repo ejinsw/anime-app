@@ -21,23 +21,15 @@ export interface AnimeStatus {
 	updated_at: string;
 }
 
-export interface AnimePreview {
-	node: {
-		id: number;
-		title: string;
-		main_picture: MainPicture;
-	};
-}
-
 export interface AlternativeTitles {
-	synonyms: string[];
-	en: string;
-	ja: string;
+	synonyms?: string[];
+	en?: string;
+	ja?: string;
 }
 
 export interface Broadcast {
-	day_of_the_week: string;
-	start_time: string;
+	day_of_the_week?: string;
+	start_time?: string;
 }
 
 export interface Picture {
@@ -48,19 +40,19 @@ export interface Picture {
 export interface RelatedAnimeNode {
 	id: number;
 	title: string;
-	main_picture: MainPicture;
+	main_picture?: MainPicture;
 }
 
 export interface RelatedAnime {
 	node: RelatedAnimeNode;
 	relation_type: string;
-	relation_type_formatted: string;
+	relation_type_formatted?: string;
 }
 
 export interface RecommendationNode {
 	id: number;
 	title: string;
-	main_picture: MainPicture;
+	main_picture?: MainPicture;
 }
 
 export interface Recommendation {
@@ -74,49 +66,106 @@ export interface Studio {
 }
 
 export interface StatisticsStatus {
-	watching: string;
-	completed: string;
-	on_hold: string;
-	dropped: string;
-	plan_to_watch: string;
+	watching?: string;
+	completed?: string;
+	on_hold?: string;
+	dropped?: string;
+	plan_to_watch?: string;
 }
 
 export interface Statistics {
-	status: StatisticsStatus;
+	status?: StatisticsStatus;
 	num_list_users: number;
 }
 
-export interface AnimeDetails {
+export interface AnimeDetail {
+	node: {
+		id: number;
+		title: string;
+		main_picture?: MainPicture | null;
+		alternative_titles?: AlternativeTitles | null;
+		start_date?: string | null;
+		end_date?: string | null;
+		synopsis?: string | null;
+		mean?: number | null;
+		rank?: number | null;
+		popularity?: number | null;
+		num_list_users?: number | null;
+		num_scoring_users?: number | null;
+		nsfw?: string | null;
+		created_at?: string | null;
+		updated_at?: string | null;
+		media_type?: string | null;
+		status?: string | null;
+		genres?: Genre[];
+		my_list_status?: AnimeStatus | null;
+		num_episodes?: number | null;
+		start_season?: AnimeSeason | null;
+		broadcast?: Broadcast | null;
+		source?: string | null;
+		average_episode_duration?: number | null;
+		rating?: string | null;
+		pictures?: Picture[];
+		background?: string | null;
+		related_anime?: RelatedAnime[];
+		related_manga?: MangaDetail[];
+		recommendations?: Recommendation[];
+		studios?: Studio[];
+		statistics?: Statistics;
+	};
+}
+
+export interface MainPicture {
+	medium: string;
+	large: string;
+}
+
+export interface Genre {
+	id: number;
+	name: string;
+}
+
+export interface AlternativeTitles {
+	synonyms?: string[];
+	en?: string;
+	ja?: string;
+}
+
+export interface PersonRoleEdge {
+	id: number;
+	name: string;
+	role: string;
+}
+
+export interface MangaStatus {
+	status: string;
+	score: number;
+	num_chapters_read: number;
+	is_rereading: boolean;
+	updated_at: string;
+}
+
+export interface MangaDetail {
 	id: number;
 	title: string;
-	main_picture: MainPicture;
-	alternative_titles: AlternativeTitles;
-	start_date: string;
-	end_date: string;
-	synopsis: string;
-	mean: number;
-	rank: number;
-	popularity: number;
+	main_picture?: MainPicture | null;
+	alternative_titles?: AlternativeTitles | null;
+	start_date?: string | null;
+	end_date?: string | null;
+	synopsis?: string | null;
+	mean?: number | null;
+	rank?: number | null;
+	popularity?: number | null;
 	num_list_users: number;
 	num_scoring_users: number;
-	nsfw: string;
+	nsfw?: string | null;
 	created_at: string;
 	updated_at: string;
 	media_type: string;
 	status: string;
-	genres: Genre[];
-	my_list_status: AnimeStatus;
-	num_episodes: number;
-	start_season: AnimeSeason;
-	broadcast: Broadcast;
-	source: string;
-	average_episode_duration: number;
-	rating: string;
-	pictures: Picture[];
-	background: string;
-	related_anime: RelatedAnime[];
-	related_manga: any[]; // Left as 'any[]' since related_manga is empty in your example
-	recommendations: Recommendation[];
-	studios: Studio[];
-	statistics: Statistics;
+	genres?: Genre[];
+	my_list_status?: MangaStatus | null;
+	num_volumes: number;
+	num_chapters: number;
+	authors?: PersonRoleEdge[];
 }

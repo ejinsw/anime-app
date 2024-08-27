@@ -2,19 +2,16 @@ import { PUBLIC_MAL_CLIENT_ID } from '$env/static/public';
 import type { RequestHandler } from '@sveltejs/kit';
 import { json } from '@sveltejs/kit';
 
-export const GET: RequestHandler = async ({ fetch, url }) => {
-	const year = url.searchParams.get('year');
-	const season = url.searchParams.get('season');
-	const offset = parseInt(url.searchParams.get('offset') || '0', 10) || 0;
-	const limit = parseInt(url.searchParams.get('limit') || '0', 10) || 5;
 
-	if (!year || !season) {
+export const GET: RequestHandler = async ({ url }) => {
+	const animeId = url.searchParams.get('id');
+	if (!animeId) {
 		return new Response('Bad Request: Missing required parameters', { status: 400 });
 	}
 
 	try {
 		const res = await fetch(
-			`https://api.myanimelist.net/v2/anime/season/${year}/${season}?offset=${offset}&limit=${limit}&fields=start_date,end_date,synopsis,mean,rank,popularity,nsfw,media_type,status,num_episodes,rating`,
+			`https://api.myanimelist.net/v2/anime/${animeId}?fields=id,title,main_picture,alternative_titles,start_date,end_date,synopsis,mean,rank,popularity,num_list_users,num_scoring_users,nsfw,created_at,updated_at,media_type,status,genres,my_list_status,num_episodes,start_season,broadcast,source,average_episode_duration,rating,pictures,background,related_anime,related_manga,recommendations,studios,statistics`,
 			{
 				method: 'GET',
 				headers: {
@@ -24,7 +21,6 @@ export const GET: RequestHandler = async ({ fetch, url }) => {
 		);
 
 		if (!res.ok) {
-			console.log("Failed to fetch anime data")
 			return new Response('Failed to fetch anime data', { status: res.status });
 		}
 
