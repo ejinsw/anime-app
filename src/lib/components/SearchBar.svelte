@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { AnimeDetail, AnimeDetail } from '$lib/types';
+	import type { AnimeDetail } from '$lib/types';
 	import { createSelect, melt } from '@melt-ui/svelte';
 	import { fade } from 'svelte/transition';
 	import Preview from './Preview.svelte';
@@ -117,7 +117,7 @@
 			>
 				<h3 class="text-white text-lg mb-2">Search Results</h3>
 				<div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-					{#each results as result (result.id)}
+					{#each results as result (result.node.id)}
 						<Preview variant="list" anime={result} />
 					{/each}
 				</div>

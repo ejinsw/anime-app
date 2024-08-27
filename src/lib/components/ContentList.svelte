@@ -47,7 +47,7 @@
 			>
 		</span>
 	</div>
-	<nav class="flex overflow-x-auto w-full space-x-4 pb-2">
+	<nav class="flex overflow-x-auto w-full h-fit space-x-4 pb-2">
 		{#if anime}
 			{#each anime as item}
 				<Preview anime={item} />

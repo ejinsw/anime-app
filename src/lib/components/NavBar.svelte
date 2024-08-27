@@ -15,7 +15,7 @@
 </script>
 
 <div
-	class="flex justify-center items-center fixed bottom-6 left-1/2 transform -translate-x-1/2 w-[80%] md:w-[60%] bg-gray-800 bg-opacity-80 backdrop-blur-lg backdrop-saturate-150 rounded-full px-4 py-2 shadow-lg"
+	class="flex justify-center items-center fixed bottom-6 left-1/2 transform -translate-x-1/2 w-[80%] md:w-[60%] bg-[#1c1c1c] bg-opacity-80 backdrop-blur-lg backdrop-saturate-150 rounded-full px-4 py-2 shadow-lg"
 >
 	<div class="flex gap-6 text-white">
 		<button
