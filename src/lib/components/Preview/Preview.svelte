@@ -4,7 +4,7 @@
 		mediaTypeFormatted,
 		ratingFormatted,
 		scoreToColor,
-		ratingStatusFormatted,
+		ratingStatusFormatted
 	} from '$lib/utils';
 	import MaterialSymbolsPlayArrowRounded from '~icons/material-symbols/play-arrow-rounded';
 	import { createTooltip, melt } from '@melt-ui/svelte';
@@ -14,6 +14,7 @@
 	import MyListStatusDropdown from './MyListStatusDropdown.svelte';
 	import MyListScore from '$lib/components/Preview/MyListScore.svelte';
 	import MyListEpisodes from './MyListEpisodes.svelte';
+	import MyListDelete from './MyListDelete.svelte';
 
 	export let variant: 'card' | 'long' | 'list' = 'card';
 	export let anime: AnimeDetail;
@@ -206,17 +207,19 @@
 		<h1 class="text-white font-bold text-lg mb-2">{anime.title}</h1>
 		<!-- User -->
 		{#if user && anime.my_list_status}
-			<div class="flex gap-1">
+			<div class="flex gap-1 mb-1">
 				<!-- Status -->
 				<MyListStatusDropdown {anime} style="color" bind:status />
 				<!-- Episodes -->
 				<MyListEpisodes {anime} />
 				<!-- Score -->
 				<MyListScore {anime} />
+				<!-- Delete -->
+				<MyListDelete bind:anime />
 			</div>
 		{:else if user && !anime.my_list_status}
 			<button
-				class="bg-blue-500/90 px-2 py-1 rounded-md shadow-lg"
+				class="bg-blue-500/90 px-2 py-1 rounded-md shadow-lg mb-1 text-white"
 				on:click|stopPropagation={handleAddToList}
 			>
 				Add to List
