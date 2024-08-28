@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Preview from '$lib/components/Preview.svelte';
+	import Preview from '$lib/components/Preview/Preview.svelte';
 	import type { AnimeDetail } from '$lib/types.js';
 
 	export let data;
@@ -11,7 +11,7 @@
 		next = data.anime.paging?.next;
 	}
 
-	let anime: AnimeDetail[] = [];
+	let anime: { node: AnimeDetail }[] = [];
 	let prev: string | null = null;
 	let next: string | null = null;
 
@@ -30,11 +30,15 @@
 
 			anime = fetchedAnime;
 
+			const q = new URL(paging?.previous).searchParams.get('q');
 			if (paging?.previous) {
 				const offset = new URL(paging?.previous).searchParams.get('offset');
-				prev = `/api/ranking?ranking_type=${category.type}&offset=${offset}`;
+				prev = `/api/search/anime?q=${q}&offset=${offset}`;
 			}
-			next = paging?.next || null;
+			if (paging?.previous) {
+				const offset = new URL(paging?.next).searchParams.get('offset');
+				prev = `/api/search/anime?q=${q}&offset=${offset}`;
+			}
 		} catch (err) {
 			console.error('Error loading anime data:', err);
 		}
@@ -53,7 +57,7 @@
 	<!-- Anime Previews Grid -->
 	<div class="grid grid-cols-4 gap-4 md:grid-cols-5 lg:grid-cols-6">
 		{#each anime as item (item.node.id)}
-			<Preview anime={item} />
+			<Preview anime={item.node} />
 		{/each}
 	</div>
 

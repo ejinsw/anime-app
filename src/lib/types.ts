@@ -37,14 +37,15 @@ export interface Picture {
 	large: string;
 }
 
-export interface RelatedAnimeNode {
-	id: number;
-	title: string;
-	main_picture?: MainPicture;
-}
 
 export interface RelatedAnime {
-	node: RelatedAnimeNode;
+	node: AnimeDetail;
+	relation_type: string;
+	relation_type_formatted?: string;
+}
+
+export interface RelatedManga {
+	node: MangaDetail;
 	relation_type: string;
 	relation_type_formatted?: string;
 }
@@ -79,40 +80,38 @@ export interface Statistics {
 }
 
 export interface AnimeDetail {
-	node: {
-		id: number;
-		title: string;
-		main_picture?: MainPicture | null;
-		alternative_titles?: AlternativeTitles | null;
-		start_date?: string | null;
-		end_date?: string | null;
-		synopsis?: string | null;
-		mean?: number | null;
-		rank?: number | null;
-		popularity?: number | null;
-		num_list_users?: number | null;
-		num_scoring_users?: number | null;
-		nsfw?: string | null;
-		created_at?: string | null;
-		updated_at?: string | null;
-		media_type?: string | null;
-		status?: string | null;
-		genres?: Genre[];
-		my_list_status?: AnimeStatus | null;
-		num_episodes?: number | null;
-		start_season?: AnimeSeason | null;
-		broadcast?: Broadcast | null;
-		source?: string | null;
-		average_episode_duration?: number | null;
-		rating?: string | null;
-		pictures?: Picture[];
-		background?: string | null;
-		related_anime?: RelatedAnime[];
-		related_manga?: MangaDetail[];
-		recommendations?: Recommendation[];
-		studios?: Studio[];
-		statistics?: Statistics;
-	};
+	id: number;
+	title: string;
+	main_picture?: MainPicture | null;
+	alternative_titles?: AlternativeTitles | null;
+	start_date?: string | null;
+	end_date?: string | null;
+	synopsis?: string | null;
+	mean?: number | null;
+	rank?: number | null;
+	popularity?: number | null;
+	num_list_users?: number | null;
+	num_scoring_users?: number | null;
+	nsfw?: string | null;
+	created_at?: string | null;
+	updated_at?: string | null;
+	media_type?: string | null;
+	status?: string | null;
+	genres?: Genre[];
+	my_list_status?: AnimeStatus | null;
+	num_episodes?: number | null;
+	start_season?: AnimeSeason | null;
+	broadcast?: Broadcast | null;
+	source?: string | null;
+	average_episode_duration?: number | null;
+	rating?: string | null;
+	pictures?: Picture[];
+	background?: string | null;
+	related_anime?: RelatedAnime[];
+	related_manga?: RelatedManga[];
+	recommendations?: Recommendation[];
+	studios?: Studio[];
+	statistics?: Statistics;
 }
 
 export interface MainPicture {
@@ -168,4 +167,30 @@ export interface MangaDetail {
 	num_volumes: number;
 	num_chapters: number;
 	authors?: PersonRoleEdge[];
+}
+
+export interface User {
+	id: number;
+	name: string;
+	location: string;
+	joined_at: string;
+	anime_statistics: AnimeStatistics;
+}
+
+export interface AnimeStatistics {
+	num_items_watching: number;
+	num_items_completed: number;
+	num_items_on_hold: number;
+	num_items_dropped: number;
+	num_items_plan_to_watch: number;
+	num_items: number;
+	num_days_watched: number;
+	num_days_watching: number;
+	num_days_completed: number;
+	num_days_on_hold: number;
+	num_days_dropped: number;
+	num_days: number;
+	num_episodes: number;
+	num_times_rewatched: number;
+	mean_score: number;
 }

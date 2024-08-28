@@ -3,6 +3,10 @@
 	import type { AnimeDetail } from '$lib/types';
 	import { DateToSeason } from '$lib/utils.js';
 	import { onMount } from 'svelte';
+
+	export let data;
+	$: user = data.user;
+
 	const today = new Date();
 
 	// Categories to be displayed (you can add or remove categories as needed)
@@ -10,20 +14,23 @@
 		{ type: 'all', title: 'Top Anime Series' },
 		{ type: 'airing', title: 'Top Airing Anime' },
 		{ type: 'upcoming', title: 'Top Upcoming Anime' },
-		{ type: 'tv', title: 'Top Anime TV Series' },
-		{ type: 'ova', title: 'Top Anime OVA Series' },
-		{ type: 'movie', title: 'Top Anime Movies' },
-		{ type: 'special', title: 'Top Anime Specials' },
-		{ type: 'bypopularity', title: 'Top Anime by Popularity' },
-		{ type: 'favorite', title: 'Top Favorited Anime' }
+		// { type: 'tv', title: 'Top Anime TV Series' },
+		// { type: 'ova', title: 'Top Anime OVA Series' },
+		// { type: 'movie', title: 'Top Anime Movies' },
+		// { type: 'special', title: 'Top Anime Specials' },
+		// { type: 'bypopularity', title: 'Top Anime by Popularity' },
+		// { type: 'favorite', title: 'Top Favorited Anime' }
 	];
 
 	// Stores for each category's anime data and pagination
-	let seasonalAnime: AnimeDetail[] = [];
+	let seasonalAnime: { node: AnimeDetail }[] = [];
 	let seasonalPrev: string | null = null;
 	let seasonalNext: string | null = null;
 
-	let rankedAnimeData: Record<string, { anime: AnimeDetail[]; prev: string | null; next: string | null }> = {};
+	let rankedAnimeData: Record<
+		string,
+		{ anime: { node: AnimeDetail }[]; prev: string | null; next: string | null }
+	> = {};
 
 	// Generalized fetch function
 	async function fetchAnime(url: string, type: 'seasonal' | 'ranked', category: string = '') {
@@ -58,7 +65,10 @@
 	// Initial fetch on mount
 	onMount(async () => {
 		// Fetch seasonal anime
-		await fetchAnime(`/api/seasonal?year=${today.getFullYear()}&season=${DateToSeason(today)}`, 'seasonal');
+		await fetchAnime(
+			`/api/seasonal?year=${today.getFullYear()}&season=${DateToSeason(today)}`,
+			'seasonal'
+		);
 
 		// Fetch anime for each ranking category
 		for (const category of rankedCategories) {
@@ -69,8 +79,9 @@
 
 <div class="space-y-8">
 	<ContentList
+		{user}
 		title={'Seasonal Anime'}
-		anime={seasonalAnime}
+		anime={seasonalAnime.map((anime) => anime.node)}
 		prev={() => {
 			if (seasonalPrev) {
 				const offset = new URL(seasonalPrev).searchParams.get('offset');
@@ -94,20 +105,29 @@
 	<!-- Dynamically render each ranked category -->
 	{#each rankedCategories as category}
 		<ContentList
+			{user}
 			title={category.title}
-			anime={rankedAnimeData[category.type]?.anime || []}
+			anime={rankedAnimeData[category.type]?.anime.map((anime) => anime.node) || []}
 			prev={() => {
 				const prev = rankedAnimeData[category.type]?.prev;
 				if (prev) {
 					const offset = new URL(prev).searchParams.get('offset');
-					fetchAnime(`/api/ranking?ranking_type=${category.type}&offset=${offset}`, 'ranked', category.type);
+					fetchAnime(
+						`/api/ranking?ranking_type=${category.type}&offset=${offset}`,
+						'ranked',
+						category.type
+					);
 				}
 			}}
 			next={() => {
 				const next = rankedAnimeData[category.type]?.next;
 				if (next) {
 					const offset = new URL(next).searchParams.get('offset');
-					fetchAnime(`/api/ranking?ranking_type=${category.type}&offset=${offset}`, 'ranked', category.type);
+					fetchAnime(
+						`/api/ranking?ranking_type=${category.type}&offset=${offset}`,
+						'ranked',
+						category.type
+					);
 				}
 			}}
 		/>

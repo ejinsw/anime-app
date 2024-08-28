@@ -5,7 +5,7 @@ export const GET: RequestHandler = async ({ fetch, cookies }) => {
 
 	if (!token) {
 		console.log("Unauthorized: can't get user info");
-		return null;
+		return new Response('Unauthorized', { status: 401 });
 	}
 
 	const res = await fetch(

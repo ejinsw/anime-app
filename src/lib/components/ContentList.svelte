@@ -1,15 +1,16 @@
 <script lang="ts">
-	import type { AnimeDetail } from '$lib/types';
-	import Preview from '$lib/components/Preview.svelte';
+	import type { AnimeDetail, User } from '$lib/types';
+	import Preview from '$lib/components/Preview/Preview.svelte';
 	import { onMount } from 'svelte';
 
 	import IcRoundChevronLeft from '~icons/ic/round-chevron-left';
-	import IcRoundChevronRight from '~icons/ic/round-chevron-right'; 
- 
+	import IcRoundChevronRight from '~icons/ic/round-chevron-right';
+
 	export let title: string = '';
 	export let anime: AnimeDetail[];
 	export let prev: () => void;
 	export let next: () => void;
+	export let user: User | null = null;
 
 	let shimmerAnimation = false;
 
@@ -47,13 +48,15 @@
 			>
 		</span>
 	</div>
-	<nav class="flex overflow-x-auto w-full h-fit space-x-4 pb-2">
-		{#if anime}
-			{#each anime as item}
-				<Preview anime={item} />
-			{/each}
-		{/if}
-	</nav>
+	<section class="flex overflow-x-auto w-full h-fit">
+		<nav class="flex w-fit h-fit space-x-4 pb-2">
+			{#if anime}
+				{#each anime as item}
+					<Preview {user} anime={item} />
+				{/each}
+			{/if}
+		</nav>
+	</section>
 </div>
 
 <style>

@@ -1,8 +1,8 @@
 <script lang="ts">
-	import type { AnimeDetail } from '$lib/types';
+	import type { AnimeDetail, User } from '$lib/types';
 	import { createSelect, melt } from '@melt-ui/svelte';
 	import { fade } from 'svelte/transition';
-	import Preview from './Preview.svelte';
+	import Preview from './Preview/Preview.svelte';
 	import OutClick from 'svelte-outclick';
 
 	import MaterialSymbolsCheckSmallRounded from '~icons/material-symbols/check-small-rounded';
@@ -10,12 +10,14 @@
 	import MdiMagnify from '~icons/mdi/magnify';
 	import { goto } from '$app/navigation';
 
+	export let user: User | null = null
+
 	let searchQuery = '';
 	let showResults = false;
 	let resultsPane: HTMLElement;
 
 	const options = ['Anime', 'Manga'];
-	let results: AnimeDetail[] = []; // State to hold search results
+	let results: { node: AnimeDetail }[] = []; // State to hold search results
 
 	const {
 		elements: { trigger, menu, option },
@@ -118,7 +120,7 @@
 				<h3 class="text-white text-lg mb-2">Search Results</h3>
 				<div class="flex flex-col">
 					{#each results as result (result.node.id)}
-						<Preview variant="list" anime={result} />
+						<Preview {user} variant="list" anime={result.node} />
 					{/each}
 				</div>
 			</div>

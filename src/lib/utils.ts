@@ -55,7 +55,9 @@ export function ratingFormatted(rating: string) {
 		case 'pg_13':
 			return 'PG-13';
 		case 'r':
+			return 'R';
 		case 'r+':
+			return 'R+';
 		case 'rx':
 			return 'R18';
 		default:
@@ -63,7 +65,7 @@ export function ratingFormatted(rating: string) {
 	}
 }
 
-export function statusFormatted(status: string) {
+export function ratingStatusFormatted(status: string) {
 	switch (status) {
 		case 'finished_airing':
 			return 'Finished Airing';
@@ -76,23 +78,139 @@ export function statusFormatted(status: string) {
 	}
 }
 
-export function scoreToColor(score: number, extension: string = 'text-') {
+export function listStatusFormatted(status: string) {
+	switch (status) {
+		case 'watching':
+			return 'Watching';
+		case 'completed':
+			return 'Completed';
+		case 'on_hold':
+			return 'On Hold';
+		case 'dropped':
+			return 'Dropped';
+		case 'plan_to_watch':
+			return 'Plan to Watch';
+		default:
+			return '?';
+	}
+}
+
+export function listStatusToColor(
+	status: string,
+	extension: 'text-' | 'bg-' = 'text-',
+	hardness: 'soft' | 'hard' = 'hard'
+) {
+	switch (status) {
+		case 'watching':
+			return hardness === 'soft'
+				? extension === 'text-'
+					? 'text-green-200'
+					: 'bg-green-200'
+				: extension === 'text-'
+					? 'text-green-500'
+					: 'bg-green-500';
+		case 'completed':
+			return hardness === 'soft'
+				? extension === 'text-'
+					? 'text-blue-200'
+					: 'bg-blue-200'
+				: extension === 'text-'
+					? 'text-blue-500'
+					: 'bg-blue-500';
+		case 'on_hold':
+			return hardness === 'soft'
+				? extension === 'text-'
+					? 'text-orange-200'
+					: 'bg-orange-200'
+				: extension === 'text-'
+					? 'text-orange-500'
+					: 'bg-orange-500';
+		case 'dropped':
+			return hardness === 'soft'
+				? extension === 'text-'
+					? 'text-red-200'
+					: 'bg-red-200'
+				: extension === 'text-'
+					? 'text-red-500'
+					: 'bg-red-500';
+		case 'plan_to_watch':
+			return hardness === 'soft'
+				? extension === 'text-'
+					? 'text-neutral-200'
+					: 'bg-neutral-200'
+				: extension === 'text-'
+					? 'text-neutral-500'
+					: 'bg-neutral-500';
+		default:
+			return hardness === 'soft'
+				? extension === 'text-'
+					? 'text-neutral-200'
+					: 'bg-neutral-200'
+				: extension === 'text-'
+					? 'text-neutral-500'
+					: 'bg-neutral-500';
+	}
+}
+
+export function scoreToColor(
+	score: number,
+	extension: 'text-' | 'bg-' = 'text-',
+	hardness: 'soft' | 'hard' = 'hard'
+) {
 	switch (score) {
+		case 0:
+			return hardness === 'soft'
+				? extension === 'text-'
+					? 'text-neutral-200'
+					: 'bg-neutral-200'
+				: extension === 'text-'
+					? 'text-neutral-800'
+					: 'bg-neutral-800';
 		case 1:
 		case 2:
 		case 3:
-			return extension + 'red-500';
+			return hardness === 'soft'
+				? extension === 'text-'
+					? 'text-red-200'
+					: 'bg-red-200'
+				: extension === 'text-'
+					? 'text-red-800'
+					: 'bg-red-800';
 		case 4:
 		case 5:
 		case 6:
-			return extension + 'orange-400';
+			return hardness === 'soft'
+				? extension === 'text-'
+					? 'text-orange-200'
+					: 'bg-orange-200'
+				: extension === 'text-'
+					? 'text-orange-800'
+					: 'bg-orange-800';
 		case 7:
 		case 8:
-			return extension + 'green-400';
+			return hardness === 'soft'
+				? extension === 'text-'
+					? 'text-green-200'
+					: 'bg-green-200'
+				: extension === 'text-'
+					? 'text-green-800'
+					: 'bg-green-800';
 		case 9:
 		case 10:
-			return extension + 'green-500';
+			return hardness === 'soft'
+				? extension === 'text-'
+					? 'text-green-200'
+					: 'bg-green-200'
+				: extension === 'text-'
+					? 'text-green-800'
+					: 'bg-green-800';
 		default:
-			return extension + 'red-400';
+			return hardness === 'soft'
+				? extension === 'text-'
+					? 'text-red-200'
+					: 'bg-red-200'
+				: extension === 'text-'
+					? 'text-red-800'
+					: 'bg-red-800';
 	}
 }
