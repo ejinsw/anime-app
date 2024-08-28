@@ -26,7 +26,7 @@
 >
 	<div class="absolute top-0 left-0 w-full h-full pointer-events-none -z-10">
 		<img
-			src={'https://yugenanime.tv/static/img/161130007900716348.jpg'}
+			src={currAnime?.main_picture?.large ?? 'https://yugenanime.tv/static/img/161130007900716348.jpg'}
 			class="w-full absolute -top-60 left-0"
 			alt="Banner background"
 		/>
@@ -40,6 +40,7 @@
 			<h1 class="font-bold text-3xl">{currAnime?.title ?? ''}</h1>
 			<p class="text-sm mt-4">{currAnime?.synopsis?.substring(0, 300)}...</p>
 			<a
+            on:click|stopPropagation
 				href={`/anime/${currAnime?.id ?? 0}`}
 				class="flex items-center gap-1 justify-center w-fit mt-12 text-lg from-purple-500 to-blue-500 bg-gradient-to-t px-2 py-1 rounded-lg"
 				>View<MaterialSymbolsArrowOutwardRounded class="mt-1" /></a
