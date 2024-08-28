@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { page } from '$app/stores';
 	import {
 		PUBLIC_MAL_CLIENT_ID,
 		PUBLIC_MAL_CLIENT_SECRET,
@@ -35,7 +36,7 @@
 			client_id: PUBLIC_MAL_CLIENT_ID,
 			client_secret: PUBLIC_MAL_CLIENT_SECRET,
 			state: state,
-			redirect_uri: PUBLIC_MAL_REDIRECT_URI,
+			redirect_uri: $page.url.origin + '/callback',
 			code_challenge: codeChallenge,
 			code_challenge_method: 'plain'
 		});

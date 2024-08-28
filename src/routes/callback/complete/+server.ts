@@ -22,7 +22,7 @@ export const GET: RequestHandler = async ({ cookies, locals, url }) => {
 			client_secret: PUBLIC_MAL_CLIENT_SECRET,
 			grant_type: 'authorization_code',
 			code,
-			redirect_uri: PUBLIC_MAL_REDIRECT_URI,
+			redirect_uri: url.origin + '/callback',
 			code_verifier: codeVerifier
 		});
 

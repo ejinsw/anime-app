@@ -9,6 +9,7 @@
 	import clsx from 'clsx';
 
 	import MaterialSymbolsArrowRightAltRounded from '~icons/material-symbols/arrow-right-alt-rounded';
+	import { page } from '$app/stores';
  
 	let codeVerifier: string;
 	let codeChallenge: string;
@@ -29,7 +30,7 @@
 			client_id: PUBLIC_MAL_CLIENT_ID,
 			client_secret: PUBLIC_MAL_CLIENT_SECRET,
 			state: state,
-			redirect_uri: PUBLIC_MAL_REDIRECT_URI,
+			redirect_uri: $page.url.origin + '/callback',
 			code_challenge: codeChallenge,
 			code_challenge_method: 'plain'
 		});

@@ -1,7 +1,7 @@
 import { PUBLIC_MAL_CLIENT_ID, PUBLIC_MAL_REDIRECT_URI, PUBLIC_MAL_CLIENT_SECRET } from '$env/static/public';
 import { json } from '@sveltejs/kit';
 
-export const POST = async ({ request, cookies }) => {
+export const POST = async ({ request, cookies, url}) => {
 	const { code, codeVerifier } = await request.json();
 
 	const params = new URLSearchParams({
@@ -9,7 +9,7 @@ export const POST = async ({ request, cookies }) => {
         client_secret: PUBLIC_MAL_CLIENT_SECRET,
 		grant_type: 'authorization_code',
 		code: code,
-		redirect_uri: PUBLIC_MAL_REDIRECT_URI,
+		redirect_uri: url.origin + '/callback',
 		code_verifier: codeVerifier
 	});
 
