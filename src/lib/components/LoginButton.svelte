@@ -2,7 +2,6 @@
 	import {
 		PUBLIC_MAL_CLIENT_ID,
 		PUBLIC_MAL_CLIENT_SECRET,
-		PUBLIC_MAL_REDIRECT_URI
 	} from '$env/static/public';
 	import { generateCodeChallenge, generateCodeVerifier } from '$lib/auth/utils';
 	import { onMount } from 'svelte';

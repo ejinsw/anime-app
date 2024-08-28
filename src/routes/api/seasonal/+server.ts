@@ -6,7 +6,7 @@ export const GET: RequestHandler = async ({ fetch, url, cookies }) => {
 	const year = url.searchParams.get('year');
 	const season = url.searchParams.get('season');
 	const offset = parseInt(url.searchParams.get('offset') || '0', 10) || 0;
-	const limit = parseInt(url.searchParams.get('limit') || '0', 10) || 5;
+	const limit = parseInt(url.searchParams.get('limit') || '0', 10) || 100;
 	const token = cookies.get('mal_access_token')
 
 	if (!year || !season) {

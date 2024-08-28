@@ -66,13 +66,13 @@
 	onMount(async () => {
 		// Fetch seasonal anime
 		await fetchAnime(
-			`/api/seasonal?year=${today.getFullYear()}&season=${DateToSeason(today)}`,
+			`/api/seasonal?year=${today.getFullYear()}&season=${DateToSeason(today)}&limit=10`,
 			'seasonal'
 		);
 
 		// Fetch anime for each ranking category
 		for (const category of rankedCategories) {
-			await fetchAnime(`/api/ranking?ranking_type=${category.type}`, 'ranked', category.type);
+			await fetchAnime(`/api/ranking?ranking_type=${category.type}&limit=10`, 'ranked', category.type);
 		}
 	});
 </script>

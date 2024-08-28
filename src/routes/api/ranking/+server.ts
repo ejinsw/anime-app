@@ -5,7 +5,7 @@ import { json } from '@sveltejs/kit';
 export const GET: RequestHandler = async ({ fetch, url, cookies }) => {
 	const rankingType = url.searchParams.get('ranking_type') || 'all';
 	const offset = parseInt(url.searchParams.get('offset') || '0', 10) || 0;
-	const limit = parseInt(url.searchParams.get('limit') || '0', 10) || 5;
+	const limit = parseInt(url.searchParams.get('limit') || '0', 10) || 100;
 	const token = cookies.get('mal_access_token');
 
 	const types = [

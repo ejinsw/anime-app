@@ -39,9 +39,9 @@
 	<div class={`flex gap-6 text-white transition-opacity duration-300 ease-in-out w-fit`}>
 		{#each paths as route}
 			<a
+			on:click={() => (active = route.title)}
 				href={route.path}
 				class={`flex items-center justify-center px-4 py-2 rounded-full w-fit transition-all ${active === route.title ? 'bg-neutral-700/80 border border-neutral-600' : ''}`}
-				on:click={() => (active = route.title)}
 			>
 				<svelte:component this={route.icon}/>
 			</a>

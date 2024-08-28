@@ -1,4 +1,4 @@
-import { PUBLIC_MAL_CLIENT_ID, PUBLIC_MAL_REDIRECT_URI, PUBLIC_MAL_CLIENT_SECRET } from '$env/static/public';
+import { PUBLIC_MAL_CLIENT_ID, PUBLIC_MAL_CLIENT_SECRET } from '$env/static/public';
 import { json } from '@sveltejs/kit';
 
 export const POST = async ({ request, cookies, url}) => {

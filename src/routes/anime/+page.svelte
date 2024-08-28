@@ -53,31 +53,33 @@
 	}
 </script>
 
-<div class="space-y-8">
-	<!-- Anime Previews Grid -->
-	<div class="grid grid-cols-4 gap-4 md:grid-cols-5 lg:grid-cols-6">
-		{#each anime as item (item.node.id)}
-			<PreviewCard anime={item.node} />
-		{/each}
-	</div>
+<section class="flex justify-center">
+	<div class="space-y-8 w-fit">
+		<!-- Anime Previews Grid -->
+		<div class="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
+			{#each anime as item (item.node.id)}
+				<PreviewCard anime={item.node} />
+			{/each}
+		</div>
 
-	<!-- Pagination Controls -->
-	<div class="flex justify-between mt-4">
-		<button
-			on:click={() => {
-				loadMoreAnime('prev');
-			}}
-			disabled={!prev}
-			class="px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-600 disabled:opacity-50"
-		>
-			Previous
-		</button>
-		<button
-			on:click={() => loadMoreAnime('next')}
-			disabled={!next}
-			class="px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-600 disabled:opacity-50"
-		>
-			Next
-		</button>
+		<!-- Pagination Controls -->
+		<div class="flex justify-between mt-4">
+			<button
+				on:click={() => {
+					loadMoreAnime('prev');
+				}}
+				disabled={!prev}
+				class="px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-600 disabled:opacity-50"
+			>
+				Previous
+			</button>
+			<button
+				on:click={() => loadMoreAnime('next')}
+				disabled={!next}
+				class="px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-600 disabled:opacity-50"
+			>
+				Next
+			</button>
+		</div>
 	</div>
-</div>
+</section>

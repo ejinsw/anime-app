@@ -5,6 +5,8 @@ import { json } from '@sveltejs/kit';
 export const GET: RequestHandler = async ({ fetch, url, cookies }) => {
 	const query = url.searchParams.get('q');
 	const token = cookies.get('mal_access_token');
+	const limit = parseInt(url.searchParams.get('limit') || '0', 10) || 100;
+
 
 	if (!query) {
 		return new Response('Bad Request: Missing required parameters', { status: 400 });
@@ -12,7 +14,7 @@ export const GET: RequestHandler = async ({ fetch, url, cookies }) => {
 
 	try {
 		const res = await fetch(
-			`https://api.myanimelist.net/v2/anime?q=${query}&limit=20&nsfw=true&fields=start_date,end_date,synopsis,mean,rank,popularity,nsfw,media_type,status,num_episodes,rating,alternative_titles,genres,my_list_status`,
+			`https://api.myanimelist.net/v2/anime?q=${query}&limit=${limit}&nsfw=true&fields=start_date,end_date,synopsis,mean,rank,popularity,nsfw,media_type,status,num_episodes,rating,alternative_titles,genres,my_list_status`,
 			{
 				method: 'GET',
 				headers: {
