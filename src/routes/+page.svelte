@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Banner from '$lib/components/Banner.svelte';
 	import ContentList from '$lib/components/ContentList.svelte';
 	import type { AnimeDetail } from '$lib/types';
 	import { DateToSeason } from '$lib/utils.js';
@@ -7,13 +8,15 @@
 	export let data;
 	$: user = data.user;
 
+	$: bannerTitles = seasonalAnime.map(anime => anime.node)
+
 	const today = new Date();
 
 	// Categories to be displayed (you can add or remove categories as needed)
 	const rankedCategories = [
 		{ type: 'all', title: 'Top Anime Series' },
 		{ type: 'airing', title: 'Top Airing Anime' },
-		{ type: 'upcoming', title: 'Top Upcoming Anime' },
+		{ type: 'upcoming', title: 'Top Upcoming Anime' }
 		// { type: 'tv', title: 'Top Anime TV Series' },
 		// { type: 'ova', title: 'Top Anime OVA Series' },
 		// { type: 'movie', title: 'Top Anime Movies' },
@@ -72,12 +75,18 @@
 
 		// Fetch anime for each ranking category
 		for (const category of rankedCategories) {
-			await fetchAnime(`/api/ranking?ranking_type=${category.type}&limit=10`, 'ranked', category.type);
+			await fetchAnime(
+				`/api/ranking?ranking_type=${category.type}&limit=10`,
+				'ranked',
+				category.type
+			);
 		}
 	});
 </script>
 
 <div class="space-y-8">
+	<Banner anime={bannerTitles} />
+	
 	<ContentList
 		{user}
 		title={'Seasonal Anime'}
