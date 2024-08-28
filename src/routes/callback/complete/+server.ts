@@ -6,13 +6,15 @@ import {
 } from '$env/static/public';
 import { json, redirect, type RequestHandler } from '@sveltejs/kit';
 
-export const POST: RequestHandler = async ({ request, cookies, locals }) => {
+export const GET: RequestHandler = async ({ cookies, locals, url }) => {
 	try {
-		const { code, codeVerifier } = await request.json();
+		const codeVerifier = url.searchParams.get('code_verifier');
+		const code = url.searchParams.get('code');
+
 
 		if (!code || !codeVerifier) {
 			console.error('Missing code or codeVerifier');
-			throw redirect(301, '/');
+			return json({ message: 'Missing code or codeVerifier', status: 401 });
 		}
 
 		const params = new URLSearchParams({
@@ -35,7 +37,7 @@ export const POST: RequestHandler = async ({ request, cookies, locals }) => {
 		if (!response.ok) {
 			const errorResponse = await response.json();
 			console.error('Token exchange failed:', errorResponse);
-			throw redirect(301, '/');
+			return json({ message: 'Token exchange failed', status: 500 });
 		}
 
 		const tokens = await response.json();
@@ -75,5 +77,5 @@ export const POST: RequestHandler = async ({ request, cookies, locals }) => {
 		return json({ error: 'Internal Server Error' }, { status: 500 });
 	}
 
-	throw redirect(301, '/');
+	throw redirect(302, '/');
 };

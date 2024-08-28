@@ -2,7 +2,7 @@
 	import type { AnimeDetail, User } from '$lib/types';
 	import { createSelect, melt } from '@melt-ui/svelte';
 	import { fade } from 'svelte/transition';
-	import Preview from './Preview/Preview.svelte';
+	import PreviewList from './Preview/PreviewList.svelte';
 	import OutClick from 'svelte-outclick';
 
 	import MaterialSymbolsCheckSmallRounded from '~icons/material-symbols/check-small-rounded';
@@ -120,7 +120,7 @@
 				<h3 class="text-white text-lg mb-2">Search Results</h3>
 				<div class="flex flex-col">
 					{#each results as result (result.node.id)}
-						<Preview {user} variant="list" anime={result.node} />
+						<PreviewList {user} anime={result.node} />
 					{/each}
 				</div>
 			</div>

@@ -7,11 +7,19 @@
 	import { generateCodeChallenge, generateCodeVerifier } from '$lib/auth/utils';
 	import { onMount } from 'svelte';
 
+	export let data;
+	$: user = data.user;
+
 	let codeVerifier: string;
 	let codeChallenge: string;
 	let state: string;
 
 	onMount(() => {
+		if (user) {
+			window.history.back();
+			return;
+		}
+
 		codeVerifier = generateCodeVerifier();
 		codeChallenge = generateCodeChallenge(codeVerifier);
 		state = crypto.randomUUID(); // Generate a unique state value

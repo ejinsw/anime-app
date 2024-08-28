@@ -1,37 +1,27 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
+	import { page } from '$app/stores';
+	import { onMount } from 'svelte';
 
 	onMount(async () => {
-		const urlParams = new URLSearchParams(window.location.search);
-		const code = urlParams.get('code');
-		const returnedState = urlParams.get('state');
-
-		if (!code || !returnedState) {
-			console.error('Invalid OAuth response');
-			return;
-		}
+		console.log('Component mounted, sending POST request...');
 
 		const storedState = sessionStorage.getItem('state');
-		const codeVerifier = sessionStorage.getItem('code_verifier');
+		const returnedState = $page.url.searchParams.get('state');
 
 		if (storedState !== returnedState) {
-			console.error('Invalid state, possible CSRF attack detected');
+			console.error(
+				'Invalid state, possible CSRF attack detected',
+				`State stored: ${storedState}`,
+				`State returned: ${returnedState}`
+			);
 			return;
 		}
+
+		const codeVerifier = sessionStorage.getItem('code_verifier');
+		const code = $page.url.searchParams.get('code');
 
 		// Send the code and codeVerifier to the server-side endpoint
-		const response = await fetch('/callback', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify({ code, codeVerifier })
-		});
-
-		if (!response.ok) {
-			console.error('Token exchange failed', response);
-			return;
-		}
+		goto(`/callback/complete?code_verifier=${codeVerifier}&code=${code}`);
 	});
 </script>

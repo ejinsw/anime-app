@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { AnimeDetail, User } from '$lib/types';
-	import Preview from '$lib/components/Preview/Preview.svelte';
+	import PreviewCard from '$lib/components/Preview/PreviewCard.svelte';
 	import { onMount } from 'svelte';
 
 	import IcRoundChevronLeft from '~icons/ic/round-chevron-left';
@@ -52,7 +52,7 @@
 		<nav class="flex w-fit h-fit space-x-4 pb-2">
 			{#if anime}
 				{#each anime as item}
-					<Preview {user} anime={item} />
+					<PreviewCard {user} anime={item} />
 				{/each}
 			{/if}
 		</nav>

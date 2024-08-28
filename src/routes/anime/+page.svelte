@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Preview from '$lib/components/Preview/Preview.svelte';
+	import PreviewCard from '$lib/components/Preview/PreviewCard.svelte';
 	import type { AnimeDetail } from '$lib/types.js';
 
 	export let data;
@@ -57,7 +57,7 @@
 	<!-- Anime Previews Grid -->
 	<div class="grid grid-cols-4 gap-4 md:grid-cols-5 lg:grid-cols-6">
 		{#each anime as item (item.node.id)}
-			<Preview anime={item.node} />
+			<PreviewCard anime={item.node} />
 		{/each}
 	</div>
 

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Preview from '$lib/components/Preview/Preview.svelte';
+	import PreviewCard from '$lib/components/Preview/PreviewCard.svelte';
 	import type { AnimeDetail } from '$lib/types.js';
 	import { ratingStatusFormatted } from '$lib/utils.js';
 
@@ -68,7 +68,7 @@
 			<ul class="flex gap-4 overflow-x-auto">
 				{#each detail.related_anime as related}
 					<li class="flex flex-col items-center text-center w-fit">
-						<Preview anime={related.node} size="md" />
+						<PreviewCard anime={related.node} size="md" />
 						<p class="text-xs text-gray-500">{related.relation_type_formatted}</p>
 					</li>
 				{/each}
@@ -83,7 +83,7 @@
 			<ul class="flex gap-4 overflow-x-auto">
 				{#each detail.recommendations as recommendation}
 					<li class="flex flex-col items-center text-center w-32">
-						<Preview anime={recommendation.node} size="md" />
+						<PreviewCard anime={recommendation.node} size="md" />
 						<p class="text-xs text-gray-500">
 							{recommendation.num_recommendations} recommendations
 						</p>

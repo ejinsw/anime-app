@@ -28,7 +28,7 @@
 		{
 			title: 'profile',
 			icon: CarbonUserAvatar,
-			path: '/login'
+			path: !user ? '/login' : '/profile'
 		}
 	];
 </script>
