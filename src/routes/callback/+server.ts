@@ -1,19 +1,23 @@
 // src/routes/callback/+server.ts
-import { PUBLIC_MAL_CLIENT_ID, PUBLIC_MAL_CLIENT_SECRET, PUBLIC_MAL_REDIRECT_URI } from '$env/static/public';
+import {
+	PUBLIC_MAL_CLIENT_ID,
+	PUBLIC_MAL_CLIENT_SECRET,
+	PUBLIC_MAL_REDIRECT_URI
+} from '$env/static/public';
 import { json, redirect, type RequestHandler } from '@sveltejs/kit';
 
-export const POST: RequestHandler = async ({ request, cookies }) => {
+export const POST: RequestHandler = async ({ request, cookies, locals }) => {
 	try {
 		const { code, codeVerifier } = await request.json();
 
 		if (!code || !codeVerifier) {
 			console.error('Missing code or codeVerifier');
-			return json({ error: 'Invalid request data' }, { status: 400 });
+			throw redirect(301, '/');
 		}
 
 		const params = new URLSearchParams({
 			client_id: PUBLIC_MAL_CLIENT_ID,
-            client_secret: PUBLIC_MAL_CLIENT_SECRET,
+			client_secret: PUBLIC_MAL_CLIENT_SECRET,
 			grant_type: 'authorization_code',
 			code,
 			redirect_uri: PUBLIC_MAL_REDIRECT_URI,
@@ -31,10 +35,7 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
 		if (!response.ok) {
 			const errorResponse = await response.json();
 			console.error('Token exchange failed:', errorResponse);
-			return json(
-				{ error: 'Token exchange failed', details: errorResponse },
-				{ status: response.status }
-			);
+			throw redirect(301, '/');
 		}
 
 		const tokens = await response.json();
@@ -53,9 +54,26 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
 			path: '/',
 			maxAge: 2592000 // 30 days
 		});
+
+		const res = await fetch(
+			'https://api.myanimelist.net/v2/users/@me?fields=id,name,location,joined_at',
+			{
+				method: 'GET',
+				headers: {
+					Authorization: `Bearer ${tokens.access_token}`
+				}
+			}
+		);
+
+		if (res.ok) {
+			locals.user = await res.json();
+		} else {
+			locals.user = null;
+		}
 	} catch (err) {
 		console.error('Error during token exchange:', err);
 		return json({ error: 'Internal Server Error' }, { status: 500 });
 	}
-	throw redirect(302, '/');
+
+	throw redirect(301, '/');
 };

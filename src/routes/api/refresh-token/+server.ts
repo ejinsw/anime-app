@@ -47,5 +47,5 @@ export async function POST({ cookies }) {
 		});
 	}
 
-	return json({ success: true });
+	return json({ access_token: tokens.access_token });
 }

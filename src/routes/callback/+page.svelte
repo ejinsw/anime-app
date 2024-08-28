@@ -33,8 +33,5 @@
 			console.error('Token exchange failed', response);
 			return;
 		}
-
-		// Tokens are handled on the server, just navigate to the main page
-		goto('/');
 	});
 </script>

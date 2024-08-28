@@ -71,7 +71,7 @@
 		use:melt={$trigger}
 	>
 		<button
-			class="{`group relative ${maxImgH[size]} flex flex-col rounded-xl overflow-hidden shadow-inner hover:rounded-md transition-all duration-300`}F"
+			class="{`group relative ${maxImgH[size]} flex flex-col rounded-md overflow-hidden shadow-inner transition-all duration-300`}F"
 			on:click={() => goto(`/anime/${anime.id}`)}
 		>
 			<!-- Header -->
@@ -175,25 +175,7 @@
 			</div>
 		</div>
 	</a>
-{:else if variant === 'long'}
-	<div
-		class="{`group relative ${sizeClasses[size]} rounded-xl overflow-hidden shadow-inner hover:rounded-md transition-all duration-300`}F"
-	>
-		{#if anime.main_picture}
-			<img src={anime.main_picture.medium} alt={anime.title} class="w-full h-full object-cover" />
-		{/if}
-		<div
-			class="absolute bottom-0 left-0 w-full h-full flex items-center justify-center bg-black/50
-    text-white text-center p-2 tracking-tighter leading-tight opacity-0 group-hover:opacity-100 transition-opacity duration-300
-    pointer-events-none"
-		>
-			{anime.title}
-		</div>
-		<span
-			class="absolute left-0 bottom-0 w-full h-1 bg-gradient-to-r from-blue-400 to-purple-600 rounded-full invisible group-hover:visible transition-all duration-100"
-		></span>
-	</div>
-{/if}
+{:else if variant === 'long'}{/if}
 
 <!-- Popup -->
 {#if $open}
