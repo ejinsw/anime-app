@@ -6,7 +6,7 @@ export const GET: RequestHandler = async ({ fetch, url, cookies }) => {
 	const nsfw = url.searchParams.get('nsfw') || 'false';
 	const query = url.searchParams.get('q');
 	const token = cookies.get('mal_access_token');
-	const limit = parseInt(url.searchParams.get('limit') || '0', 10) || 100;
+	const limit = parseInt(url.searchParams.get('limit') || '0', 10) || 10;
 
 
 	if (!query) {

@@ -3,16 +3,16 @@ import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ url, fetch }) => {
 	const searchQuery = url.searchParams.get('search');
+	const limit = parseInt(url.searchParams.get('limit') || '0', 10) || 10;
 
 	let anime;
 
 	if (searchQuery) {
-		const res = await fetch(`/api/search/anime?q=${searchQuery}`)
-        anime = await res.json();
-
+		const res = await fetch(`/api/search/anime?q=${searchQuery}&limit=${limit}`);
+		anime = await res.json();
 	} else {
-        const res = await fetch(`/api/ranking?limit=100`)
-        anime = await res.json();
-    }
+		const res = await fetch(`/api/ranking?limit=100`);
+		anime = await res.json();
+	}
 	return { anime };
 };

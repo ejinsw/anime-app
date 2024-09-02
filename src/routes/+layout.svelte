@@ -12,6 +12,9 @@
 
 	onMount(() => {
 		allow_nsfw.set(localStorage.getItem('mal_allow_nsfw') === 'true');
+		allow_nsfw.subscribe((val) => {
+			localStorage.setItem('mal_allow_nsfw', val.toString());
+		});
 	});
 </script>
 

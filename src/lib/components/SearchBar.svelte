@@ -9,15 +9,19 @@
 	import MaterialSymbolsKeyboardArrowDownRounded from '~icons/material-symbols/keyboard-arrow-down-rounded';
 	import MdiMagnify from '~icons/mdi/magnify';
 	import { goto } from '$app/navigation';
+	import { allow_nsfw } from '$lib/stores/stores';
 
-	export let user: User | null = null
+	export let user: User | null = null;
 
 	let searchQuery = '';
 	let showResults = false;
 	let resultsPane: HTMLElement;
 
 	const options = ['Anime', 'Manga'];
-	let results: { node: AnimeDetail }[] = []; // State to hold search results
+	let results: { node: AnimeDetail }[] = [];
+	$: filteredResults = $allow_nsfw
+		? results
+		: results.filter((anime) => anime.node.nsfw === 'white');
 
 	const {
 		elements: { trigger, menu, option },
@@ -74,7 +78,7 @@
 				break;
 			case 'Enter':
 				if (searchQuery.length >= 3) {
-					goto(`/anime?search=${searchQuery}`);
+					goto(`/anime?search=${searchQuery}&limit=100`);
 				}
 				break;
 		}
@@ -112,23 +116,29 @@
 			on:focus={() => (showResults = true)}
 			class="w-full pl-12 pr-4 py-2 border border-neutral-700 rounded-lg bg-neutral-800 text-white placeholder-neutral-500 focus:outline-none focus:ring focus:ring-blue-500"
 		/>
-		{#if showResults && searchQuery && searchQuery.length >= 3 && results.length > 0}
+		{#if showResults && searchQuery && searchQuery.length >= 3 && filteredResults.length > 0}
 			<!-- Search Results -->
 			<div
 				class="mt-4 w-full h-fit max-h-96 overflow-auto rounded-lg bg-neutral-900 p-4 shadow-lg absolute top-8"
 			>
 				<h3 class="text-white text-lg mb-2">Search Results</h3>
 				<div class="flex flex-col">
-					{#each results as result (result.node.id)}
+					{#each filteredResults as result (result.node.id)}
 						<PreviewList {user} anime={result.node} />
 					{/each}
 				</div>
 			</div>
-		{:else if showResults && searchQuery && searchQuery.length >= 3 && !results.length}
-			<!-- No results found -->
-			<div class="mt-4 w-full rounded-lg bg-neutral-900 p-4 shadow-lg text-white absolute top-8">
-				<p>No results found for "{searchQuery}".</p>
-			</div>
+		{:else if showResults && searchQuery && searchQuery.length >= 3 && !filteredResults.length}
+			{#if !results.length}
+				<!-- No results found -->
+				<div class="mt-4 w-full rounded-lg bg-neutral-900 p-4 shadow-lg text-white absolute top-8">
+					<p>No results found for "{searchQuery}".</p>
+				</div>
+			{:else}
+				<div class="mt-4 w-full rounded-lg bg-neutral-900 p-4 shadow-lg text-white absolute top-8">
+					<p>Some results hidden for "{searchQuery}".</p>
+				</div>
+			{/if}
 		{/if}
 	</div>
 </div>
