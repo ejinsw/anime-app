@@ -1,6 +1,9 @@
 <script lang="ts">
+	import { page } from '$app/stores';
 	import PreviewCard from '$lib/components/Preview/PreviewCard.svelte';
+	import { allow_nsfw } from '$lib/stores/stores.js';
 	import type { AnimeDetail } from '$lib/types.js';
+	import { onMount } from 'svelte';
 
 	export let data;
 
@@ -33,11 +36,11 @@
 			const q = new URL(paging?.previous).searchParams.get('q');
 			if (paging?.previous) {
 				const offset = new URL(paging?.previous).searchParams.get('offset');
-				prev = `/api/search/anime?q=${q}&offset=${offset}`;
+				prev = `/api/search/anime?q=${q}&offset=${offset}&nsfw=${$allow_nsfw}`;
 			}
 			if (paging?.previous) {
 				const offset = new URL(paging?.next).searchParams.get('offset');
-				prev = `/api/search/anime?q=${q}&offset=${offset}`;
+				prev = `/api/search/anime?q=${q}&offset=${offset}&nsfw=${$allow_nsfw}`;
 			}
 		} catch (err) {
 			console.error('Error loading anime data:', err);
@@ -51,6 +54,20 @@
 			fetchAnime(url);
 		}
 	}
+
+	onMount(async () => {
+		const searchQuery = $page.url.searchParams.get('search');
+
+		let anime;
+
+		if (searchQuery) {
+			const res = await fetch(`/api/search/anime?q=${searchQuery}&nsfw=${$allow_nsfw}`);
+			anime = await res.json();
+		} else {
+			const res = await fetch(`/api/ranking?limit=100&nsfw=${$allow_nsfw}`);
+			anime = await res.json();
+		}
+	});
 </script>
 
 <section class="flex justify-center">

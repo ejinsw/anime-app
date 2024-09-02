@@ -6,15 +6,19 @@
 		scoreToColor,
 		ratingStatusFormatted
 	} from '$lib/utils';
-	import MaterialSymbolsPlayArrowRounded from '~icons/material-symbols/play-arrow-rounded';
 	import { createTooltip, melt } from '@melt-ui/svelte';
 	import { fade } from 'svelte/transition';
 	import clsx from 'clsx';
 	import { goto } from '$app/navigation';
+
+	import MaterialSymbolsPlayArrowRounded from '~icons/material-symbols/play-arrow-rounded';
+
 	import MyListStatusDropdown from './MyListStatusDropdown.svelte';
 	import MyListScore from '$lib/components/Preview/MyListScore.svelte';
 	import MyListEpisodes from './MyListEpisodes.svelte';
 	import MyListDelete from './MyListDelete.svelte';
+	import ContentWarning from './ContentWarning.svelte';
+	import { allow_nsfw } from '$lib/stores/stores';
 
 	export let anime: AnimeDetail;
 	export let size: 'sm' | 'md' | 'lg' = 'lg'; // Default size is 'md'
@@ -68,70 +72,97 @@
 	class={clsx(`flex flex-col min-h-fit h-full ${sizeClasses[size]}`, $$props.class)}
 	use:melt={$trigger}
 >
-	<button
-		class="{`group relative ${maxImgH[size]} flex flex-col rounded-md overflow-hidden shadow-inner transition-all duration-300`}F"
-		on:click={() => goto(`/anime/${anime.id}`)}
-	>
-		<!-- Header -->
-		<span class="z-10 absolute flex left-0 top-0 w-full h-fit items-start text-sm p-1">
-			<!-- Media Tag -->
-			<div class="bg-black/70 px-2 py-1 rounded-md">
-				{mediaTypeFormatted(anime.media_type ?? '')}
-			</div>
-
-			<!-- NSFW Tag -->
-			{#if anime.nsfw && anime.nsfw !== 'white'}
-				<div
-					class="ml-auto bg-red-500/90 w-fit h-fit px-1 py-[2px] text-xs text-center rounded-md shadow-xl text-white font-semibold tracking-tighter"
-				>
-					R18
+	{#if ($allow_nsfw && anime.rating === 'rx') || anime.rating !== 'rx'}
+		<button
+			class="{`group relative ${maxImgH[size]} flex flex-col rounded-md overflow-hidden shadow-inner transition-all duration-300`}F"
+			on:click={() => goto(`/anime/${anime.id}`)}
+		>
+			<!-- Header -->
+			<span class="z-10 absolute flex left-0 top-0 w-full h-fit items-start text-sm p-1">
+				<!-- Media Tag -->
+				<div class="bg-black/70 px-2 py-1 rounded-md">
+					{mediaTypeFormatted(anime.media_type ?? '')}
 				</div>
-			{/if}
-		</span>
 
-		<!-- Picture -->
-		{#if anime.main_picture}
+				<!-- NSFW Tag -->
+				{#if anime.nsfw && anime.nsfw !== 'white'}
+					<ContentWarning class="ml-auto" />
+				{/if}
+			</span>
+
+			<!-- Picture -->
+			{#if anime.main_picture}
+				<img
+					src={anime.main_picture.large}
+					alt={anime.title}
+					class="w-full h-full object-cover pointer-events-none"
+				/>
+			{/if}
+
+			<!-- Footer -->
+			<span
+				class="z-10 absolute flex gap-1 items-center left-0 bottom-0 w-full h-fit p-1 shadow-lg text-sm tracking-tighter"
+			>
+				<!-- User Tags -->
+				{#if user && anime.my_list_status}
+					<!-- Status -->
+					<MyListStatusDropdown {anime} style="dark" bind:status />
+				{:else if user && !anime.my_list_status}
+					<button
+						class="bg-blue-500/90 px-2 py-1 rounded-md shadow-lg"
+						on:click|stopPropagation={handleAddToList}
+					>
+						Add to List
+					</button>
+				{/if}
+			</span>
+
+			<!-- Hover -->
+			<div
+				class="absolute bottom-0 left-0 w-full h-full flex items-center justify-center bg-black/50 z-0
+						text-white text-center p-2 tracking-tighter leading-tight opacity-0 group-hover:opacity-100 transition-opacity duration-300
+   			 			pointer-events-none"
+			>
+				<MaterialSymbolsPlayArrowRounded class="text-neutral-300 text-3xl" />
+			</div>
+		</button>
+
+		<!-- Title -->
+		<div
+			class="w-full h-fit mt-2 flex items-center justify-center text-white text-sm text-center p-2 tracking-tighter leading-tight pointer-events-none"
+		>
+			{anime.title}
+		</div>
+	{:else if anime.main_picture}
+		<div
+			class={`group relative ${maxImgH[size]} flex rounded-md overflow-hidden shadow-inner transition-all duration-300`}
+		>
 			<img
 				src={anime.main_picture.large}
 				alt={anime.title}
 				class="w-full h-full object-cover pointer-events-none"
 			/>
-		{/if}
 
-		<!-- Footer -->
-		<span
-			class="z-10 absolute flex gap-1 items-center left-0 bottom-0 w-full h-fit p-1 shadow-lg text-sm tracking-tighter"
-		>
-			<!-- User Tags -->
-			{#if user && anime.my_list_status}
-				<!-- Status -->
-				<MyListStatusDropdown {anime} style="dark" bind:status />
-			{:else if user && !anime.my_list_status}
-				<button
-					class="bg-blue-500/90 px-2 py-1 rounded-md shadow-lg"
-					on:click|stopPropagation={handleAddToList}
-				>
-					Add to List
-				</button>
-			{/if}
-		</span>
+			<div
+				class="w-full h-full bg-neutral-600/40 backdrop-blur-lg backdrop-saturate-150 absolute top-0 left-0"
+			/>
 
-		<!-- Hover -->
-		<div
-			class="absolute bottom-0 left-0 w-full h-full flex items-center justify-center bg-black/50 z-0
-						text-white text-center p-2 tracking-tighter leading-tight opacity-0 group-hover:opacity-100 transition-opacity duration-300
-   			 			pointer-events-none"
-		>
-			<MaterialSymbolsPlayArrowRounded class="text-neutral-300 text-3xl" />
+			<!-- NSFW Tag -->
+			<span class="z-10 absolute flex left-0 top-0 w-full h-fit items-start text-sm p-1">
+				<!-- NSFW Tag -->
+				{#if anime.nsfw && anime.nsfw !== 'white'}
+					<ContentWarning class="ml-auto" />
+				{/if}
+			</span>
+
+			<span
+				class="absolute flex flex-col justify-center items-center left-0 top-0 w-full h-full text-sm p-1"
+			>
+				<h1 class="text-lg">Content Warning!</h1>
+				<p class="mt-4 text-xs">Enable NSFW to View</p>
+			</span>
 		</div>
-	</button>
-
-	<!-- Title -->
-	<div
-		class="w-full h-fit mt-2 flex items-center justify-center text-white text-sm text-center p-2 tracking-tighter leading-tight pointer-events-none"
-	>
-		{anime.title}
-	</div>
+	{/if}
 </div>
 
 <!-- Popup -->
@@ -209,6 +240,14 @@
 		</span>
 		<span class="flex gap-1"
 			><span class="text-neutral-500">Score:</span><span> {anime.mean ?? '?'}</span></span
+		>
+		<span class="flex gap-1"
+			><span class="text-neutral-500">Rank:</span><span> {anime.rank ?? '?'}</span></span
+		>
+		<span class="flex gap-1"
+			><span class="text-neutral-500">Popularity:</span><span>
+				{anime.popularity ?? '?'}</span
+			></span
 		>
 		<span class="flex gap-1"
 			><span class="text-neutral-500">Date aired:</span>

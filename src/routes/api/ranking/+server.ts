@@ -4,8 +4,9 @@ import { json } from '@sveltejs/kit';
 
 export const GET: RequestHandler = async ({ fetch, url, cookies }) => {
 	const rankingType = url.searchParams.get('ranking_type') || 'all';
-	const offset = parseInt(url.searchParams.get('offset') || '0', 10) || 0;
+	const nsfw = url.searchParams.get('nsfw') || 'false';
 	const limit = parseInt(url.searchParams.get('limit') || '0', 10) || 100;
+	const offset = parseInt(url.searchParams.get('offset') || '0', 10) || 0;
 	const token = cookies.get('mal_access_token');
 
 	const types = [
@@ -22,10 +23,9 @@ export const GET: RequestHandler = async ({ fetch, url, cookies }) => {
 	if (!types.includes(rankingType)) {
 		return new Response('Bad Request: Missing required parameters', { status: 400 });
 	}
-
 	try {
 		const res = await fetch(
-			`https://api.myanimelist.net/v2/anime/ranking?ranking_type=${rankingType}&limit=${limit}&offset=${offset}&fields=start_date,end_date,synopsis,mean,rank,popularity,nsfw,media_type,status,num_episodes,rating,alternative_titles,genres${token && ',my_list_status'}`,
+			`https://api.myanimelist.net/v2/anime/ranking?ranking_type=${rankingType}&offset=${offset}&limit=${limit}${nsfw !== 'false' ? '&nsfw=true' : ''}&fields=start_date,end_date,synopsis,mean,rank,popularity,nsfw,media_type,status,num_episodes,rating,alternative_titles,genres,my_list_status`,
 			{
 				method: 'GET',
 				headers: {

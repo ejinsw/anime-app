@@ -5,16 +5,18 @@
 
 	import IcRoundChevronLeft from '~icons/ic/round-chevron-left';
 	import IcRoundChevronRight from '~icons/ic/round-chevron-right';
+	import { allow_nsfw } from '$lib/stores/stores';
 
 	export let title: string = '';
 	export let anime: AnimeDetail[];
 	export let prev: () => void;
 	export let next: () => void;
 	export let user: User | null = null;
-
+	
 	let shimmerAnimation = false;
 
 	onMount(() => {
+
 		setInterval(() => {
 			shimmerAnimation = true;
 			setTimeout(() => {
@@ -27,13 +29,10 @@
 <div class="w-full">
 	<div class="flex items-center">
 		<h1
-			class="text-3xl font-semibold tracking-tight text-gray-100 mb-4 relative inline-block animate-fade-in"
+			class="text-3xl font-semibold tracking-tight bg-gradient-to-r bg-clip-text text-transparent from-slate-400 to-slate-500 mb-4 relative inline-block animate-fade-in {shimmerAnimation &&
+					'shimmer'}"
 		>
 			{title}
-			<span
-				class="absolute left-0 bottom-0 w-full h-1 bg-gradient-to-r from-slate-400 to-slate-500 rounded-full {shimmerAnimation &&
-					'shimmer'}"
-			></span>
 		</h1>
 		<span class="ml-auto">
 			<button
