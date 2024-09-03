@@ -8,12 +8,13 @@
 
 	import OutClick from 'svelte-outclick';
 	import { allow_nsfw } from '$lib/stores/stores';
+	import { page } from '$app/stores';
 
 	export let user: User | null;
 
 	let button: HTMLElement, pane: HTMLElement;
 
-	let active = 'home';
+	$: active = $page.url.pathname;
 	let nsfwEnabled = false;
 
 	const paths = [
@@ -70,9 +71,8 @@
 	<div class={`flex gap-6 text-white transition-opacity duration-300 ease-in-out w-fit`}>
 		{#each paths as route}
 			<a
-				on:click={() => (active = route.title)}
 				href={route.path}
-				class={`flex items-center justify-center px-4 py-2 rounded-full w-fit transition-all ${active === route.title ? 'bg-neutral-700/80 border border-neutral-600' : ''}`}
+				class={`flex items-center justify-center px-4 py-2 rounded-full w-fit transition-all ${active === route.path ? 'bg-neutral-700/80 border border-neutral-600' : ''}`}
 			>
 				<svelte:component this={route.icon} />
 			</a>

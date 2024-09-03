@@ -27,7 +27,7 @@
 			name: 'All',
 			items: animeList.data.sort((a, b) => a.list_status.status.localeCompare(b.list_status.status))
 		},
-        {
+		{
 			id: 'plan-to-watch',
 			name: 'Plan to Watch',
 			items: animeList.data.filter((item) => item.list_status.status === 'plan_to_watch')
@@ -51,8 +51,7 @@
 			id: 'dropped',
 			name: 'Dropped',
 			items: animeList.data.filter((item) => item.list_status.status === 'dropped')
-		},
-		
+		}
 	];
 
 	const {
@@ -141,10 +140,15 @@
 			{/each}
 		</div>
 		{#each userLists as list}
-			<div use:melt={$content(list.id)} class="grow bg-white p-5 grid-cols-3 {$value === list.id ? 'grid' : 'hidden'}">
-				{#each list.items as anime}
-					<PreviewCard {user} anime={anime.node} listStatus={anime.list_status} />
-				{/each}
+			<div
+				use:melt={$content(list.id)}
+				class="grow bg-white p-5"
+			>
+				<div class="mx-auto w-fit gap-4 grid-cols-2 md:grid-cols-3 {$value === list.id ? 'grid' : 'hidden'}">
+					{#each list.items as anime}
+						<PreviewCard {user} anime={anime.node} listStatus={anime.list_status} />
+					{/each}
+				</div>
 			</div>
 		{/each}
 	</div>
