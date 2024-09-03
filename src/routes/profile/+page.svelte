@@ -3,7 +3,6 @@
 	import type { AnimeDetail, AnimeStatus, User } from '$lib/types';
 	import { scoreToColor } from '$lib/utils';
 	import { createTabs, melt } from '@melt-ui/svelte';
-	import clsx from 'clsx';
 
 	// Define the expected structure of the `data` prop
 	export let data;
@@ -24,32 +23,32 @@
 	$: userLists = [
 		{
 			id: 'all',
-			name: 'All',
+			name: `All (${profile.anime_statistics.num_items ?? '?'})`,
 			items: animeList.data.sort((a, b) => a.list_status.status.localeCompare(b.list_status.status))
 		},
 		{
 			id: 'plan-to-watch',
-			name: 'Plan to Watch',
+			name: `Plan to Watch (${profile.anime_statistics.num_items_plan_to_watch ?? '?'})`,
 			items: animeList.data.filter((item) => item.list_status.status === 'plan_to_watch')
 		},
 		{
 			id: 'watching',
-			name: 'Watching',
+			name: `Watching (${profile.anime_statistics.num_items_watching ?? '?'})`,
 			items: animeList.data.filter((item) => item.list_status.status === 'watching')
 		},
 		{
 			id: 'completed',
-			name: 'Completed',
+			name: `Completed (${profile.anime_statistics.num_items_completed ?? '?'})`,
 			items: animeList.data.filter((item) => item.list_status.status === 'completed')
 		},
 		{
 			id: 'on-hold',
-			name: 'On Hold',
+			name: `On Hold (${profile.anime_statistics.num_items_on_hold ?? '?'})`,
 			items: animeList.data.filter((item) => item.list_status.status === 'on_hold')
 		},
 		{
 			id: 'dropped',
-			name: 'Dropped',
+			name: `Dropped (${profile.anime_statistics.num_items_dropped ?? '?'})`,
 			items: animeList.data.filter((item) => item.list_status.status === 'dropped')
 		}
 	];
@@ -63,7 +62,7 @@
 </script>
 
 <!-- Profile Page Layout -->
-<div class="max-w-3xl mx-auto w-full p-6 rounded-lg shadow-md flex flex-col">
+<div class="mx-auto w-full p-6 rounded-lg shadow-md flex flex-col justify-start">
 	<!-- Profile Header -->
 	<div class="flex w-full gap-4 mb-4 items-center">
 		<div class="shrink-0">
@@ -77,30 +76,7 @@
 		<h2 class="text-2xl font-bold">{profile.name}</h2>
 	</div>
 
-	<div class="flex gap-1 text-xs mb-1">
-		<!-- Number of Items Watching -->
-		<span class="bg-blue-400 text-white px-1 py-[2px] rounded-sm min-w-fit">
-			Watching: {profile.anime_statistics.num_items_watching ?? '?'}
-		</span>
-		<!-- Number of Items Completed -->
-		<span class="bg-green-400 text-white px-1 py-[2px] rounded-sm min-w-fit">
-			Completed: {profile.anime_statistics.num_items_completed ?? '?'}
-		</span>
-		<!-- Number of Items On Hold -->
-		<span class="bg-yellow-400 text-white px-1 py-[2px] rounded-sm min-w-fit">
-			On Hold: {profile.anime_statistics.num_items_on_hold ?? '?'}
-		</span>
-		<!-- Number of Items Dropped -->
-		<span class="bg-red-400 text-white px-1 py-[2px] rounded-sm min-w-fit">
-			Dropped: {profile.anime_statistics.num_items_dropped ?? '?'}
-		</span>
-		<!-- Number of Items Plan to Watch -->
-		<span class="bg-purple-400 text-white px-1 py-[2px] rounded-sm min-w-fit">
-			Plan to Watch: {profile.anime_statistics.num_items_plan_to_watch ?? '?'}
-		</span>
-	</div>
-
-	<div class="flex gap-1 text-xs mb-1">
+    <div class="flex gap-1 text-xs mb-1 flex-wrap">
 		<!-- Number of Days Watched -->
 		<span class="bg-blue-600 text-white px-1 py-[2px] rounded-sm min-w-fit">
 			Days Watched: {profile.anime_statistics.num_days_watched ?? '?'}
@@ -122,13 +98,15 @@
 			Mean Score: {profile.anime_statistics.mean_score ?? '?'}
 		</span>
 	</div>
-
 	<div use:melt={$root} class="flex flex-col w-full overflow-hidden rounded-xl shadow-lg mt-5">
-		<div use:melt={$list} class="flex shrink-0 w-full bg-neutral-100 text-black gap-4">
+		<div
+			use:melt={$list}
+			class="flex shrink-0 w-full bg-neutral-100 text-black gap-4 overflow-x-auto"
+		>
 			{#each userLists as list}
 				<button
 					use:melt={$trigger(list.id)}
-					class="{$value === list.id ? 'bg-white' : ''} relative px-4 py-2 flex-auto"
+					class="{$value === list.id ? 'bg-white' : ''} relative px-4 py-2 flex-auto min-w-fit"
 				>
 					{list.name}
 					{#if $value === list.id}
@@ -140,11 +118,13 @@
 			{/each}
 		</div>
 		{#each userLists as list}
-			<div
-				use:melt={$content(list.id)}
-				class="grow bg-white p-5"
-			>
-				<div class="mx-auto w-fit gap-4 grid-cols-2 md:grid-cols-3 {$value === list.id ? 'grid' : 'hidden'}">
+			<div use:melt={$content(list.id)} class="grow bg-white p-5">
+				<div
+					class="mx-auto w-fit gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 {$value ===
+					list.id
+						? 'grid'
+						: 'hidden'}"
+				>
 					{#each list.items as anime}
 						<PreviewCard {user} anime={anime.node} listStatus={anime.list_status} />
 					{/each}
