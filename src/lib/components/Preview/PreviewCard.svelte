@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { AnimeDetail, User } from '$lib/types';
+	import type { AnimeDetail, AnimeStatus, User } from '$lib/types';
 	import {
 		mediaTypeFormatted,
 		ratingFormatted,
@@ -23,8 +23,9 @@
 	export let anime: AnimeDetail;
 	export let size: 'sm' | 'md' | 'lg' = 'lg'; // Default size is 'md'
 	export let user: User | null = null;
+	export let listStatus: AnimeStatus | null = anime.my_list_status ?? null;
 
-	let status: string = anime.my_list_status?.status ?? '';
+	let status: string = listStatus?.status ?? '';
 
 	let sizeClasses = {
 		sm: 'w-12',
@@ -37,7 +38,7 @@
 		md: 'h-48',
 		lg: 'h-64'
 	};
-
+	
 	const {
 		elements: { trigger, content, arrow },
 		states: { open }
@@ -59,9 +60,7 @@
 				return;
 			}
 
-			anime.my_list_status = await res.json();
-
-			console.log(anime.my_list_status);
+			listStatus = await res.json();
 		} catch (err) {
 			console.log(err);
 		}
@@ -104,10 +103,10 @@
 				class="z-10 absolute flex gap-1 items-center left-0 bottom-0 w-full h-fit p-1 shadow-lg text-sm tracking-tighter"
 			>
 				<!-- User Tags -->
-				{#if user && anime.my_list_status}
+				{#if user && listStatus}
 					<!-- Status -->
-					<MyListStatusDropdown {anime} style="dark" bind:status />
-				{:else if user && !anime.my_list_status}
+					<MyListStatusDropdown {anime} style="dark" bind:status {listStatus} />
+				{:else if user && !listStatus}
 					<button
 						class="bg-blue-500/90 px-2 py-1 rounded-md shadow-lg"
 						on:click|stopPropagation={handleAddToList}
@@ -176,18 +175,18 @@
 		<!-- Title -->
 		<h1 class="text-white font-bold text-lg mb-2">{anime.title}</h1>
 		<!-- User -->
-		{#if user && anime.my_list_status}
+		{#if user && listStatus}
 			<div class="flex gap-1 mb-1">
 				<!-- Status -->
-				<MyListStatusDropdown {anime} style="color" bind:status />
+				<MyListStatusDropdown {anime} style="color" bind:status {listStatus} />
 				<!-- Episodes -->
-				<MyListEpisodes {anime} />
+				<MyListEpisodes {anime} {listStatus} />
 				<!-- Score -->
-				<MyListScore {anime} />
+				<MyListScore {anime} {listStatus} />
 				<!-- Delete -->
-				<MyListDelete bind:anime />
+				<MyListDelete bind:anime bind:listStatus />
 			</div>
-		{:else if user && !anime.my_list_status}
+		{:else if user && !listStatus}
 			<button
 				class="bg-blue-500/90 px-2 py-1 rounded-md shadow-lg mb-1 text-white"
 				on:click|stopPropagation={handleAddToList}

@@ -174,8 +174,8 @@ export function scoreToColor(
 					? 'text-red-200'
 					: 'bg-red-200'
 				: extension === 'text-'
-					? 'text-red-800'
-					: 'bg-red-800';
+					? 'text-red-600'
+					: 'bg-red-600';
 		case 4:
 		case 5:
 		case 6:
@@ -184,8 +184,8 @@ export function scoreToColor(
 					? 'text-orange-200'
 					: 'bg-orange-200'
 				: extension === 'text-'
-					? 'text-orange-800'
-					: 'bg-orange-800';
+					? 'text-orange-600'
+					: 'bg-orange-600';
 		case 7:
 		case 8:
 			return hardness === 'soft'
@@ -193,8 +193,8 @@ export function scoreToColor(
 					? 'text-green-200'
 					: 'bg-green-200'
 				: extension === 'text-'
-					? 'text-green-800'
-					: 'bg-green-800';
+					? 'text-green-600'
+					: 'bg-green-600';
 		case 9:
 		case 10:
 			return hardness === 'soft'
@@ -202,15 +202,15 @@ export function scoreToColor(
 					? 'text-green-200'
 					: 'bg-green-200'
 				: extension === 'text-'
-					? 'text-green-800'
-					: 'bg-green-800';
+					? 'text-green-600'
+					: 'bg-green-600';
 		default:
 			return hardness === 'soft'
 				? extension === 'text-'
 					? 'text-red-200'
 					: 'bg-red-200'
 				: extension === 'text-'
-					? 'text-red-800'
-					: 'bg-red-800';
+					? 'text-red-600'
+					: 'bg-red-600';
 	}
 }

@@ -1,10 +1,11 @@
 <script lang="ts">
-	import type { AnimeDetail } from '$lib/types';
+	import type { AnimeDetail, AnimeStatus } from '$lib/types';
 	import clsx from 'clsx';
 
 	import IcTwotoneDeleteOutline from '~icons/ic/twotone-delete-outline';
 
 	export let anime: AnimeDetail;
+	export let listStatus: AnimeStatus | null;
 
 	async function handleDelete() {
 		const res = await fetch(`/api/user/animelist/delete?id=${anime.id}`);
@@ -12,7 +13,7 @@
 			console.log("Couldn't delete title from account");
 			return;
 		}
-		anime.my_list_status = null
+		listStatus = null
 	}
 </script>
 

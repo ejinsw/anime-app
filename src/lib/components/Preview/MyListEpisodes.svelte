@@ -1,10 +1,11 @@
 <script lang="ts">
-	import type { AnimeDetail } from '$lib/types';
+	import type { AnimeDetail, AnimeStatus } from '$lib/types';
 	import { createSelect, melt, type CreateSelectProps } from '@melt-ui/svelte';
 	import clsx from 'clsx';
 	import OutClick from 'svelte-outclick';
 
 	export let anime: AnimeDetail;
+	export let listStatus: AnimeStatus | null
 
 	const total = Array.from({ length: (anime.num_episodes || 0) + 1 }, (_, i) => i);
 	let button: HTMLElement;
@@ -21,7 +22,7 @@
 	}
 
 	const handleSelectedChange: CreateSelectProps['onSelectedChange'] = ({ curr, next }) => {
-		updateStatus(next?.label ?? anime.my_list_status?.num_episodes_watched.toString() ?? '');
+		updateStatus(next?.label ?? listStatus?.num_episodes_watched.toString() ?? '');
 		return next;
 	};
 
@@ -35,7 +36,7 @@
 			fitViewport: true
 		},
 		onSelectedChange: handleSelectedChange,
-		defaultSelected: { value: anime.my_list_status?.num_episodes_watched }
+		defaultSelected: { value: listStatus?.num_episodes_watched }
 	});
 </script>
 
@@ -55,7 +56,7 @@
 		$$props.class
 	)}
 >
-	{$selectedLabel || anime.my_list_status?.num_episodes_watched || 0}/{anime.num_episodes || 0}
+	{$selectedLabel || listStatus?.num_episodes_watched || 0}/{anime.num_episodes || 0}
 </button>
 
 <!-- Select Popup -->

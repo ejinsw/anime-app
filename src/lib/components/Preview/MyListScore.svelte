@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { AnimeDetail } from '$lib/types';
+	import type { AnimeDetail, AnimeStatus } from '$lib/types';
 	import { scoreToColor } from '$lib/utils';
 	import { createSelect, melt, type CreateSelectProps } from '@melt-ui/svelte';
 	import clsx from 'clsx';
@@ -8,6 +8,7 @@
 	import IcRoundStar from '~icons/ic/round-star';
 
 	export let anime: AnimeDetail;
+	export let listStatus: AnimeStatus | null;
 
 	let button: HTMLElement;
 	let pane: HTMLElement;
@@ -21,7 +22,7 @@
 	}
 
 	const handleSelectedChange: CreateSelectProps['onSelectedChange'] = ({ curr, next }) => {
-		updateStatus(next?.label ?? anime.my_list_status?.score.toString() ?? '');
+		updateStatus(next?.label ?? listStatus?.score.toString() ?? '');
 		return next;
 	};
 
@@ -35,7 +36,7 @@
 			fitViewport: true
 		},
 		onSelectedChange: handleSelectedChange,
-		defaultSelected: { value: anime.my_list_status?.score }
+		defaultSelected: { value: listStatus?.score }
 	});
 </script>
 
@@ -52,12 +53,12 @@
 	on:click|stopPropagation
 	class={clsx(
 		`px-2 py-1 w-fit h-fit rounded-md flex items-center gap-1
-        ${scoreToColor(parseInt($selectedLabel, 10) || anime.my_list_status?.score || 0, 'bg-', 'hard')} 
-        ${scoreToColor(parseInt($selectedLabel, 10) || anime.my_list_status?.score || 0, 'text-', 'soft')}`,
+        ${scoreToColor(parseInt($selectedLabel, 10) || listStatus?.score || 0, 'bg-', 'hard')} 
+        ${scoreToColor(parseInt($selectedLabel, 10) || listStatus?.score || 0, 'text-', 'soft')}`,
 		$$props.class
 	)}
 >
-	{$selectedLabel || anime.my_list_status?.score || 0}
+	{$selectedLabel || listStatus?.score || 0}
 	<IcRoundStar class="text-xs" />
 </button>
 

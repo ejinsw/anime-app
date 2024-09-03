@@ -5,18 +5,17 @@
 
 	import IcRoundChevronLeft from '~icons/ic/round-chevron-left';
 	import IcRoundChevronRight from '~icons/ic/round-chevron-right';
-	import { allow_nsfw } from '$lib/stores/stores';
+
 
 	export let title: string = '';
 	export let anime: AnimeDetail[];
-	export let prev: () => void;
-	export let next: () => void;
+	export let prev: string | null;
+	export let next: string | null;
 	export let user: User | null = null;
-	
+
 	let shimmerAnimation = false;
 
 	onMount(() => {
-
 		setInterval(() => {
 			shimmerAnimation = true;
 			setTimeout(() => {
@@ -30,19 +29,39 @@
 	<div class="flex items-center">
 		<h1
 			class="text-3xl font-semibold tracking-tight bg-gradient-to-r bg-clip-text text-transparent from-slate-400 to-slate-500 mb-4 relative inline-block animate-fade-in {shimmerAnimation &&
-					'shimmer'}"
+				'shimmer'}"
 		>
 			{title}
 		</h1>
 		<span class="ml-auto">
 			<button
-				on:click={prev}
-				class="bg-slate-50 text-gray-800 rounded-full text-center p-1 hover:bg-slate-200"
+				disabled={!prev}
+				on:click={async () => {
+					if (prev) {
+						const res = await fetch(`/api/pagination?url=${encodeURIComponent(prev)}`);
+						const titles = await res.json();
+						const { data, paging } = titles;
+						anime = data.map((anime) => anime.node);
+						prev = paging?.previous || null;
+						next = paging?.next || null;
+					}
+				}}
+				class="bg-slate-50 text-gray-800 rounded-full text-center p-1 hover:bg-neutral-200 disabled:bg-neutral-400"
 				><IcRoundChevronLeft /></button
 			>
 			<button
-				on:click={next}
-				class="bg-slate-50 text-gray-800 rounded-full text-center p-1 hover:bg-slate-200"
+				disabled={!next}
+				on:click={async () => {
+					if (next) {
+						const res = await fetch(`/api/pagination?url=${encodeURIComponent(next)}`);
+						const titles = await res.json();
+						const { data, paging } = titles;
+						anime = data.map((anime) => anime.node);
+						prev = paging?.previous || null;
+						next = paging?.next || null;
+					}
+				}}
+				class="bg-slate-50 text-gray-800 rounded-full text-center p-1 hover:bg-neutral-200 disabled:bg-neutral-400"
 				><IcRoundChevronRight /></button
 			>
 		</span>
@@ -51,7 +70,7 @@
 		<nav class="flex w-fit h-fit space-x-4 pb-2">
 			{#if anime}
 				{#each anime as item}
-					<PreviewCard {user} anime={item} />
+					<PreviewCard {user} anime={item} listStatus={item.my_list_status ?? null} />
 				{/each}
 			{/if}
 		</nav>

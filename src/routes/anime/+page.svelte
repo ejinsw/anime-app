@@ -24,7 +24,7 @@
 		<!-- Anime Previews Grid -->
 		<div class="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
 			{#each anime as item (item.node.id)}
-				<PreviewCard anime={item.node} />
+				<PreviewCard anime={item.node} listStatus={item.node.my_list_status ?? null} />
 			{/each}
 		</div>
 

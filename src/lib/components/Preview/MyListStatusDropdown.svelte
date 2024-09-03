@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { AnimeDetail } from '$lib/types';
+	import type { AnimeDetail, AnimeStatus } from '$lib/types';
 	import { listStatusFormatted, listStatusToColor } from '$lib/utils';
 	import { createSelect, melt, type CreateSelectProps } from '@melt-ui/svelte';
 	import clsx from 'clsx';
@@ -11,6 +11,8 @@
 	export let anime: AnimeDetail;
 	export let style: 'dark' | 'color' = 'dark';
 	export let status;
+	export let listStatus: AnimeStatus | null;
+
 
 	$: status = $selectedLabel;
 
@@ -27,7 +29,7 @@
 	}
 
 	const handleSelectedChange: CreateSelectProps['onSelectedChange'] = ({ curr, next }) => {
-		updateStatus(next?.label ?? anime.my_list_status?.status ?? '');
+		updateStatus(next?.label ?? listStatus?.status ?? '');
 		return next;
 	};
 
@@ -41,7 +43,7 @@
 			fitViewport: true
 		},
 		onSelectedChange: handleSelectedChange,
-		defaultSelected: { value: anime.my_list_status?.status }
+		defaultSelected: { value: listStatus?.status }
 	});
 </script>
 
@@ -62,23 +64,23 @@
         ${
 					style === 'dark'
 						? listStatusToColor(
-								status || anime.my_list_status?.status || '',
+								status || listStatus?.status || '',
 								'text-',
 								'hard'
 							)
 						: listStatusToColor(
-								status || anime.my_list_status?.status || '',
+								status || listStatus?.status || '',
 								'text-',
 								'hard'
 							) +
 							' ' +
-							listStatusToColor(status || anime.my_list_status?.status || '', 'bg-', 'soft')
+							listStatusToColor(status || listStatus?.status || '', 'bg-', 'soft')
 				}`,
 		$$props.class
 	)}
 >
 	<MdiCircleMedium />
-	{listStatusFormatted(status || anime.my_list_status?.status || '?')}
+	{listStatusFormatted(status || listStatus?.status || '?')}
 	<MaterialSymbolsKeyboardArrowDownRounded class="text-neutral-400" />
 </button>
 

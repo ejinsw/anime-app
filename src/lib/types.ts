@@ -18,6 +18,13 @@ export interface AnimeStatus {
 	score: number;
 	num_episodes_watched: number;
 	is_rewatching: boolean;
+	start_date?: string | null;
+	finish_date?: string | null;
+	priority: number;
+	num_times_rewatched: number;
+	rewatch_value: number;
+	tags: string[];
+	comments: string[];
 	updated_at: string;
 }
 
@@ -170,6 +177,7 @@ export interface MangaDetail {
 }
 
 export interface User {
+	picture: string;
 	id: number;
 	name: string;
 	location: string;
@@ -194,3 +202,5 @@ export interface AnimeStatistics {
 	num_times_rewatched: number;
 	mean_score: number;
 }
+
+export interface ListStatus

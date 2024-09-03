@@ -84,28 +84,8 @@
 		{user}
 		title={'Seasonal Anime'}
 		anime={seasonalAnime.map((anime) => anime.node)}
-		prev={async () => {
-			const prev = seasonalPrev;
-			if (prev) {
-				const res = await fetch(`/api/pagination?url=${encodeURIComponent(prev)}`);
-				const titles = await res.json();
-				const { data, paging } = titles;
-				seasonalAnime = data;
-				seasonalPrev = paging?.previous || null;
-				seasonalNext = paging?.next || null;
-			}
-		}}
-		next={async () => {
-			const next = seasonalNext;
-			if (next) {
-				const res = await fetch(`/api/pagination?url=${encodeURIComponent(next)}`);
-				const titles = await res.json();
-				const { data, paging } = titles;
-				seasonalAnime = data;
-				seasonalPrev = paging?.previous || null;
-				seasonalNext = paging?.next || null;
-			}
-		}}
+		prev={seasonalPrev}
+		next={seasonalNext}
 	/>
 
 	<!-- Dynamically render each ranked category -->
@@ -114,33 +94,8 @@
 			{user}
 			title={category.title}
 			anime={rankedAnimeData[category.type]?.anime.map((anime) => anime.node) || []}
-			prev={async () => {
-				const prev = rankedAnimeData[category.type]?.prev;
-				if (prev) {
-					const res = await fetch(`/api/pagination?url=${encodeURIComponent(prev)}`);
-					const titles = await res.json();
-					const { data, paging } = titles;
-					rankedAnimeData[category.type] = {
-						anime: data,
-						prev: paging?.previous || null,
-						next: paging?.next || null
-					};
-				}
-			}}
-			next={async () => {
-				const next = rankedAnimeData[category.type]?.next;
-				console.log(next)
-				if (next) {
-					const res = await fetch(`/api/pagination?url=${encodeURIComponent(next)}`);
-					const titles = await res.json();
-					const { data, paging } = titles;
-					rankedAnimeData[category.type] = {
-						anime: data,
-						prev: paging?.previous || null,
-						next: paging?.next || null
-					};
-				}
-			}}
+			prev={rankedAnimeData[category.type]?.prev}
+			next={rankedAnimeData[category.type]?.next}
 		/>
 	{/each}
 </div>
