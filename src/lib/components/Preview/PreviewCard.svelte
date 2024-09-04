@@ -79,7 +79,7 @@
 			<!-- Header -->
 			<span class="z-10 absolute flex left-0 top-0 w-full h-fit items-start text-sm p-1">
 				<!-- Media Tag -->
-				<div class="bg-black/70 px-2 py-1 rounded-md">
+				<div class="bg-black/70 px-2 py-1 rounded-md text-white">
 					{mediaTypeFormatted(anime.media_type ?? '')}
 				</div>
 
@@ -128,7 +128,7 @@
 
 		<!-- Title -->
 		<div
-			class="w-full h-fit mt-2 flex items-center justify-center text-white text-sm text-center p-2 tracking-tighter leading-tight pointer-events-none"
+			class="w-full h-fit mt-2 flex items-center justify-center text-sm text-center p-2 tracking-tighter leading-tight pointer-events-none"
 		>
 			{anime.title}
 		</div>

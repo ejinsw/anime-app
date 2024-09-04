@@ -1,4 +1,5 @@
 <script lang="ts">
+	import BarChart from '$lib/components/BarChart.svelte';
 	import PreviewCard from '$lib/components/Preview/PreviewCard.svelte';
 	import type { AnimeDetail, AnimeStatus, User } from '$lib/types';
 	import { scoreToColor } from '$lib/utils';
@@ -76,7 +77,7 @@
 		<h2 class="text-2xl font-bold">{profile.name}</h2>
 	</div>
 
-    <div class="flex gap-1 text-xs mb-1 flex-wrap">
+	<div class="flex gap-1 text-xs mb-1 flex-wrap">
 		<!-- Number of Days Watched -->
 		<span class="bg-blue-600 text-white px-1 py-[2px] rounded-sm min-w-fit">
 			Days Watched: {profile.anime_statistics.num_days_watched ?? '?'}
@@ -98,6 +99,54 @@
 			Mean Score: {profile.anime_statistics.mean_score ?? '?'}
 		</span>
 	</div>
+
+	<div>
+		<BarChart
+			items={[
+				{
+					label: `1`,
+					value: animeList.data.filter((item) => item.list_status.score === 1).length
+				},
+				{
+					label: `2`,
+					value: animeList.data.filter((item) => item.list_status.score === 2).length
+				},
+				{
+					label: `3`,
+					value: animeList.data.filter((item) => item.list_status.score === 3).length
+				},
+				{
+					label: `4`,
+					value: animeList.data.filter((item) => item.list_status.score === 4).length
+				},
+				{
+					label: `5`,
+					value: animeList.data.filter((item) => item.list_status.score === 5).length
+				},
+				{
+					label: `6`,
+					value: animeList.data.filter((item) => item.list_status.score === 6).length
+				},
+				{
+					label: `7`,
+					value: animeList.data.filter((item) => item.list_status.score === 7).length
+				},
+				{
+					label: `8`,
+					value: animeList.data.filter((item) => item.list_status.score === 8).length
+				},
+				{
+					label: `9`,
+					value: animeList.data.filter((item) => item.list_status.score === 9).length
+				},
+				{
+					label: `10`,
+					value: animeList.data.filter((item) => item.list_status.score === 10).length
+				}
+			]}
+		/>
+	</div>
+
 	<div use:melt={$root} class="flex flex-col w-full overflow-hidden rounded-xl shadow-lg mt-5">
 		<div
 			use:melt={$list}
@@ -126,7 +175,12 @@
 						: 'hidden'}"
 				>
 					{#each list.items as anime}
-						<PreviewCard {user} anime={anime.node} listStatus={anime.list_status} />
+						<PreviewCard
+							{user}
+							anime={anime.node}
+							listStatus={anime.list_status}
+							class="text-neutral-800"
+						/>
 					{/each}
 				</div>
 			</div>

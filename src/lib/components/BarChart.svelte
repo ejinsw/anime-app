@@ -32,7 +32,8 @@
 							y: {
 								beginAtZero: true
 							}
-						}
+						},
+                        maintainAspectRatio: false
 					}
 				});
 			}
@@ -48,6 +49,6 @@
 </script>
 
 <!-- HTML Template -->
-<div class="max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-md">
-	<canvas bind:this={chartCanvas}></canvas>
+<div class="h-80 w-full p-6 bg-none rounded-lg shadow-md">
+	<canvas bind:this={chartCanvas} class="w-full"></canvas>
 </div>

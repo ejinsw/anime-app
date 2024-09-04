@@ -17,7 +17,7 @@ export const load: PageServerLoad = async ({ locals, cookies }) => {
 	const profile = await res.json();
 
 	res = await fetch(
-		`https://api.myanimelist.net/v2/users/@me/animelist?limit=1000&fields=fields=start_date,end_date,synopsis,mean,rank,popularity,nsfw,media_type,status,num_episodes,rating,alternative_titles,genres,list_status`,
+		`https://api.myanimelist.net/v2/users/@me/animelist?limit=1000&sort=list_updated_at&fields=fields=start_date,end_date,synopsis,mean,rank,popularity,nsfw,media_type,status,num_episodes,rating,alternative_titles,genres,list_status`,
 		{
 			headers: {
 				Authorization: `Bearer ${token}`
