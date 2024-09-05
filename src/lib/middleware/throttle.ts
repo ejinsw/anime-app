@@ -31,7 +31,7 @@ export function throttle(limit: number, resetInterval: number) {
 	return (handler: RequestHandler): RequestHandler => {
 		return async (event) => {
 			// Modify event to include the handler function
-			event.handler = handler;
+			(event as any).handler = handler;
 
 			// If the request count is within the limit, proceed
 			if (requestCount < limit) {

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount, onDestroy } from 'svelte';
-	import Chart from 'chart.js/auto';
+	import Chart from '$lib/chart/chart';
 	import clsx from 'clsx';
 
 	// Define the expected props

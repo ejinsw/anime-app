@@ -68,7 +68,7 @@
 </script>
 
 <div
-	class={clsx(`flex flex-col min-h-fit h-full ${sizeClasses[size]}`, $$props.class)}
+	class={clsx(`flex flex-col min-h-fit ${sizeClasses[size]}`, $$props.class)}
 	use:melt={$trigger}
 >
 	{#if ($allow_nsfw && anime.rating === 'rx') || anime.rating !== 'rx'}

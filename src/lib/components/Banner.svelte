@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { AnimeDetail } from '$lib/types';
 	import { createProgress, melt } from '@melt-ui/svelte';
+	import clsx from 'clsx';
 	import { onMount } from 'svelte';
 	import { writable } from 'svelte/store';
 
@@ -21,7 +22,7 @@
 </script>
 
 <button
-	class="text-left w-full h-52 md:h-64 lg:h-80 overflow-hidden relative rounded-lg"
+	class={clsx("text-left w-full h-52 md:h-64 lg:h-80 overflow-hidden relative rounded-lg", $$props.class)}
 	on:click={() => (currIndex + 1 >= anime.length ? (currIndex = 0) : currIndex++)}
 >
 	<div class="absolute top-0 left-0 w-full h-full pointer-events-none -z-10">

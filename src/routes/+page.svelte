@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Banner from '$lib/components/Banner.svelte';
-	import ContentList from '$lib/components/ContentList.svelte';
+	import ContentList from '$lib/components/ContentLists/ContentList.svelte';
+	import TopContentList from '$lib/components/ContentLists/TopContentList.svelte';
 	import type { AnimeDetail } from '$lib/types';
 
 	export let data;
@@ -20,42 +21,43 @@
 	$: bannerTitles = data.seasonal?.data.map((anime: { node: AnimeDetail }) => anime.node);
 </script>
 
-<div class="space-y-8">
+<div class="flex flex-col gap-y-8 max-w-screen">
 	<Banner anime={bannerTitles} />
 
-	<!-- Seasonal -->
-	<ContentList
-		{user}
-		title={'Seasonal Anime'}
-		anime={seasonal?.data.map((anime) => anime.node)}
-		prev={seasonal?.paging.previous}
-		next={seasonal?.paging.next}
-	/>
+	<div class="flex w-full">
+		<!-- Seasonal -->
+		<ContentList
+			{user}
+			title={'Seasonal Anime'}
+			anime={seasonal?.data.map((anime) => anime.node)}
+		/>
 
-	<!-- Top -->
-	<ContentList
-		{user}
-		title={'Top'}
-		anime={top?.data.map((anime) => anime.node)}
-		prev={top?.paging.previous}
-		next={top?.paging.next}
-	/>
+		<!-- Top -->
+		<TopContentList
+			{user}
+			categories={[
+				{ title: 'All', anime: top?.data.map((anime) => anime.node) },
+				{ title: 'Airing', anime: airing?.data.map((anime) => anime.node) },
+				{ title: 'Upcoming', anime: upcoming?.data.map((anime) => anime.node) }
+			]}
+		/>
+	</div>
 
 	<!-- Airing -->
-	<ContentList
+	<!-- <ContentList
 		{user}
 		title={'Top Airing'}
 		anime={airing?.data.map((anime) => anime.node)}
 		prev={airing?.paging.previous}
 		next={airing?.paging.next}
-	/>
+	/> -->
 
 	<!-- Upcoming -->
-	<ContentList
+	<!-- <ContentList
 		{user}
 		title={'Top Upcoming'}
 		anime={upcoming?.data.map((anime) => anime.node)}
 		next={upcoming?.paging.next}
 		prev={upcoming?.paging.previous}
-	/>
+	/> -->
 </div>

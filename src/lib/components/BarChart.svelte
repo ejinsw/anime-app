@@ -1,9 +1,7 @@
 <script lang="ts">
 	import { onMount, onDestroy } from 'svelte';
-	import Chart, { plugins } from 'chart.js/auto';
-	import ChartDataLabels from 'chartjs-plugin-datalabels';
+	import Chart from '$lib/chart/chart';
 	import clsx from 'clsx';
-	Chart.register(ChartDataLabels);
 
 	// Define the expected props
 	export let items: Array<{ label: string; value: number }>;
@@ -66,14 +64,10 @@
 									weight: 'bold',
 									size: 12
 								},
-								formatter: (value: number) => {
-									return value; // Show the value on top of the bar
-								}
 							}
 						},
 						maintainAspectRatio: false
 					},
-					plugins: [ChartDataLabels]
 				});
 			}
 		}
