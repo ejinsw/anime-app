@@ -24,7 +24,7 @@
 	class={clsx(`w-full p-2 flex gap-4 text-sm ${maxImgH['sm']} hover:bg-neutral-800`, $$props.class)}
 	href={`/anime/${anime.id}`}
 >
-	<div class="{`group relative ${sizeClasses['sm']}`} min-w-fit rounded-lg overflow-hidden">
+	<div class="{`group relative ${sizeClasses['sm']}`} rounded-lg overflow-hidden">
 		{#if anime.main_picture}
 			<img
 				src={anime.main_picture.medium}

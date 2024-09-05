@@ -15,7 +15,6 @@
 
 	let searchQuery = '';
 	let showResults = false;
-	let resultsPane: HTMLElement;
 
 	const options = ['Anime', 'Manga'];
 	let results: { node: AnimeDetail }[] = [];
@@ -83,13 +82,16 @@
 				break;
 		}
 	}
+
+	let resultsPane: HTMLElement;
+	let resultsPane2: HTMLElement;
 </script>
 
 <OutClick
 	on:outclick={() => {
 		showResults = false;
 	}}
-	excludeElements={resultsPane}
+	excludeElements={[resultsPane, resultsPane2]}
 />
 
 <svelte:window on:keydown={handleKeydown} />
@@ -153,6 +155,7 @@
 	{#if showResults && searchQuery && searchQuery.length >= 3 && filteredResults.length > 0}
 		<!-- Search Results -->
 		<div
+			bind:this={resultsPane2}
 			class="mt-4 w-full h-fit max-h-96 overflow-auto rounded-lg bg-neutral-900 p-4 shadow-lg absolute top-8"
 		>
 			<h3 class="text-white text-lg mb-2">Search Results</h3>
@@ -165,7 +168,9 @@
 	{:else if showResults && searchQuery && searchQuery.length >= 3 && !filteredResults.length}
 		{#if !results.length}
 			<!-- No results found -->
-			<div class="mt-4 w-full rounded-lg bg-neutral-900 p-4 shadow-lg text-white absolute top-8">
+			<div
+				class="mt-4 w-full rounded-lg bg-neutral-900 p-4 shadow-lg text-white absolute top-8"
+			>
 				<p>No results found for "{searchQuery}".</p>
 			</div>
 		{:else}
