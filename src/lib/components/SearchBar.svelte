@@ -92,21 +92,33 @@
 
 	let resultsPane: HTMLElement;
 	let resultsPane2: HTMLElement;
+	let categoryButton: HTMLElement
+	let categoryMenu: HTMLElement
+
+	export let showSearch = false;
 </script>
 
 <OutClick
 	on:outclick={() => {
 		showResults = false;
+		showSearch = false;
 	}}
-	excludeElements={[resultsPane, resultsPane2]}
+	excludeElements={[categoryButton, categoryMenu, resultsPane, resultsPane2]}
 />
 
 <svelte:window on:keydown={handleKeydown} />
 
-<div class="relative flex space-x-2 w-full p-2 rounded-lg items-center">
+<div
+	class="relative flex space-x-2 p-2 rounded-lg items-center transition-all duration-500 {showSearch
+		? 'w-full'
+		: 'w-96'}"
+>
 	<!-- Category Selector Button -->
 	<button
-		class="flex h-10 w-40 items-center justify-between rounded-lg bg-neutral-800 px-4 py-2 text-white shadow-md transition-opacity hover:opacity-90 focus:outline-none"
+	bind:this={categoryButton}
+		class="h-10 w-40 items-center justify-between rounded-lg bg-neutral-800 px-4 py-2 text-white shadow-md transition-all duration-500 hover:opacity-90 focus:outline-none {showSearch
+			? 'flex'
+			: 'hidden'}"
 		use:melt={$trigger}
 		aria-label="Category Selector"
 	>
@@ -122,7 +134,10 @@
 			placeholder="Search..."
 			bind:value={searchQuery}
 			on:input={handleInput}
-			on:focus={() => (showResults = true)}
+			on:focus={() => {
+				showResults = true;
+				showSearch = true;
+			}}
 			class="w-full pl-12 pr-4 py-2 border border-neutral-700 rounded-lg bg-neutral-800 text-white placeholder-neutral-500 focus:outline-none focus:ring focus:ring-blue-500"
 		/>
 		<div class="hidden md:block">
@@ -189,6 +204,7 @@
 {#if $open}
 	<!-- Dropdown Menu -->
 	<div
+	bind:this={categoryMenu}
 		class="absolute z-[100] mt-2 max-h-[300px] w-40 flex flex-col overflow-y-auto rounded-lg bg-neutral-800 p-1 shadow-lg focus:!ring-0"
 		use:melt={$menu}
 		transition:fade={{ duration: 150 }}

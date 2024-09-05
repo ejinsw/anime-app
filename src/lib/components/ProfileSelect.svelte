@@ -6,6 +6,7 @@
 	import MaterialSymbolsLightLogoutRounded from '~icons/material-symbols-light/logout-rounded';
     import MaterialSymbolsSettingsOutlineRounded from '~icons/material-symbols/settings-outline-rounded'
     import CarbonUserAvatar from '~icons/carbon/user-avatar';
+	import clsx from 'clsx';
 
 	export let profile: User;
 
@@ -32,7 +33,7 @@
 
 <button
 	bind:this={button}
-	class="flex h-10 w-40 shrink-0 items-center justify-between gap-1 rounded-lg bg-neutral-800 px-2 py-2 text-white shadow-md transition-opacity hover:opacity-90 focus:outline-none"
+	class={clsx("flex h-10 w-40 shrink-0 items-center justify-between gap-1 rounded-lg bg-neutral-800 px-2 py-2 text-white shadow-md transition-opacity hover:opacity-90 focus:outline-none", $$props.class)}
 	use:melt={$trigger}
 	aria-label="Category Selector"
 >
