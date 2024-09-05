@@ -36,7 +36,7 @@
 	</div>
 	<div class="flex w-full h-full px-10 md:px-12 lg:px-20">
 		<section class="text-xl my-auto pr-4 flex flex-col">
-			<span class="text-xs font-bold text-green-500">#{currIndex + 1} SPOTLIGHT</span>
+			<span class="text-xs font-bold text-green-400">#{currIndex + 1} SPOTLIGHT</span>
 			<h1 class="font-bold text-2xl lg:text-3xl">{currAnime?.title ?? ''}</h1>
 			<p class="text-sm mt-4 hidden lg:block">{currAnime?.synopsis?.substring(0, 300)}...</p>
 			<p class="text-sm mt-4 hidden md:block lg:hidden">{currAnime?.synopsis?.substring(0, 150)}...</p>

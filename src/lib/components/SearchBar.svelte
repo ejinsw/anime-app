@@ -116,31 +116,64 @@
 			on:focus={() => (showResults = true)}
 			class="w-full pl-12 pr-4 py-2 border border-neutral-700 rounded-lg bg-neutral-800 text-white placeholder-neutral-500 focus:outline-none focus:ring focus:ring-blue-500"
 		/>
-		{#if showResults && searchQuery && searchQuery.length >= 3 && filteredResults.length > 0}
-			<!-- Search Results -->
-			<div
-				class="mt-4 w-full h-fit max-h-96 overflow-auto rounded-lg bg-neutral-900 p-4 shadow-lg absolute top-8"
-			>
-				<h3 class="text-white text-lg mb-2">Search Results</h3>
-				<div class="flex flex-col">
-					{#each filteredResults as result (result.node.id)}
-						<PreviewList {user} anime={result.node} />
-					{/each}
+		<div class="hidden md:block">
+			{#if showResults && searchQuery && searchQuery.length >= 3 && filteredResults.length > 0}
+				<!-- Search Results -->
+				<div
+					class="mt-4 w-full h-fit max-h-96 overflow-auto rounded-lg bg-neutral-900 p-4 shadow-lg absolute top-8"
+				>
+					<h3 class="text-white text-lg mb-2">Search Results</h3>
+					<div class="flex flex-col">
+						{#each filteredResults as result (result.node.id)}
+							<PreviewList {user} anime={result.node} />
+						{/each}
+					</div>
 				</div>
-			</div>
-		{:else if showResults && searchQuery && searchQuery.length >= 3 && !filteredResults.length}
-			{#if !results.length}
-				<!-- No results found -->
-				<div class="mt-4 w-full rounded-lg bg-neutral-900 p-4 shadow-lg text-white absolute top-8">
-					<p>No results found for "{searchQuery}".</p>
-				</div>
-			{:else}
-				<div class="mt-4 w-full rounded-lg bg-neutral-900 p-4 shadow-lg text-white absolute top-8">
-					<p>Some results hidden for "{searchQuery}".</p>
-				</div>
+			{:else if showResults && searchQuery && searchQuery.length >= 3 && !filteredResults.length}
+				{#if !results.length}
+					<!-- No results found -->
+					<div
+						class="mt-4 w-full rounded-lg bg-neutral-900 p-4 shadow-lg text-white absolute top-8"
+					>
+						<p>No results found for "{searchQuery}".</p>
+					</div>
+				{:else}
+					<div
+						class="mt-4 w-full rounded-lg bg-neutral-900 p-4 shadow-lg text-white absolute top-8"
+					>
+						<p>Some results hidden for "{searchQuery}".</p>
+					</div>
+				{/if}
 			{/if}
-		{/if}
+		</div>
 	</div>
+</div>
+
+<div class="md:hidden absolute top-4 left-0 w-screen">
+	{#if showResults && searchQuery && searchQuery.length >= 3 && filteredResults.length > 0}
+		<!-- Search Results -->
+		<div
+			class="mt-4 w-full h-fit max-h-96 overflow-auto rounded-lg bg-neutral-900 p-4 shadow-lg absolute top-8"
+		>
+			<h3 class="text-white text-lg mb-2">Search Results</h3>
+			<div class="flex flex-col">
+				{#each filteredResults as result (result.node.id)}
+					<PreviewList {user} anime={result.node} />
+				{/each}
+			</div>
+		</div>
+	{:else if showResults && searchQuery && searchQuery.length >= 3 && !filteredResults.length}
+		{#if !results.length}
+			<!-- No results found -->
+			<div class="mt-4 w-full rounded-lg bg-neutral-900 p-4 shadow-lg text-white absolute top-8">
+				<p>No results found for "{searchQuery}".</p>
+			</div>
+		{:else}
+			<div class="mt-4 w-full rounded-lg bg-neutral-900 p-4 shadow-lg text-white absolute top-8">
+				<p>Some results hidden for "{searchQuery}".</p>
+			</div>
+		{/if}
+	{/if}
 </div>
 
 {#if $open}

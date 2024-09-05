@@ -24,7 +24,7 @@
 	class={clsx(`w-full p-2 flex gap-4 text-sm ${maxImgH['sm']} hover:bg-neutral-800`, $$props.class)}
 	href={`/anime/${anime.id}`}
 >
-	<div class="{`group relative ${sizeClasses['sm']}`} rounded-lg overflow-hidden">
+	<div class="{`group relative ${sizeClasses['sm']}`} min-w-fit rounded-lg overflow-hidden">
 		{#if anime.main_picture}
 			<img
 				src={anime.main_picture.medium}
@@ -44,13 +44,13 @@
 				>Episodes: {anime.num_episodes === 0 ? '?' : anime.num_episodes}</span
 			>
 			<span
-				class="text-white px-1 py-[2px] rounded-sm
+				class="text-white px-1 py-[2px] rounded-sm h-fit
 					{scoreToColor(Math.floor(anime.mean ?? 0), 'bg-', 'hard')} 
 					{scoreToColor(Math.floor(anime.mean ?? 0), 'text-', 'soft')}"
 			>
 				{anime.mean ?? '?'}
 			</span>
-			<span class="bg-orange-400 text-white px-1 py-[2px] rounded-sm">
+			<span class="bg-orange-400 text-white px-1 py-[2px] rounded-sm h-fit">
 				{mediaTypeFormatted(anime.media_type ?? '')}
 			</span>
 		</div>
