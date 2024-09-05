@@ -1,23 +1,23 @@
 <script lang="ts">
 	import type { AnimeDetail, User } from '$lib/types';
 	import PreviewCard from '$lib/components/Preview/PreviewCard.svelte';
-	import { onMount } from 'svelte';
 
-	import IcRoundChevronLeft from '~icons/ic/round-chevron-left';
 	import IcRoundChevronRight from '~icons/ic/round-chevron-right';
 	import clsx from 'clsx';
 
 	export let title: string = '';
 	export let anime: AnimeDetail[];
 	export let user: User | null = null;
+	export let route: string;
 </script>
 
 <div class={clsx('w-full flex flex-col', $$props.class)}>
-	<h1
-		class="text-3xl font-semibold tracking-tight text-white mb-4"
-	>
-		{title}
-	</h1>
+	<div class="flex justify-between">
+		<h1 class="text-3xl font-semibold tracking-tight text-white mb-4">
+			{title}
+		</h1>
+		<a href={route} class="text-3xl"><IcRoundChevronRight /></a>
+	</div>
 	<section class="flex flex-wrap w-fit h-fit gap-4 pb-2">
 		{#if anime}
 			{#each anime as item}

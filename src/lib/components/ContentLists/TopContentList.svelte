@@ -4,7 +4,7 @@
 	import PreviewList from '../Preview/PreviewList.svelte';
 	import { scoreToColor } from '$lib/utils';
 
-	export let categories: { title: string; anime: AnimeDetail[] }[];
+	export let categories: { title: string; anime: AnimeDetail[]; route: string }[];
 	export let user: User | null = null;
 
 	let selectedCategory = 0;
@@ -88,4 +88,5 @@
 			{/if}
 		</ul>
 	</section>
+	<a class="flex items-center justify-center" href={categories[selectedCategory].route}>More</a>
 </div>

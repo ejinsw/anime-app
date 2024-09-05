@@ -7,7 +7,11 @@
 	export let data;
 	$: user = data.user;
 
-	let seasonal: { data: { node: AnimeDetail }[]; paging: { next: string; previous: string } };
+	let seasonal: {
+		data: { node: AnimeDetail }[];
+		paging: { next: string; previous: string };
+		season: { year: number; season: string };
+	};
 	$: seasonal = data.seasonal;
 
 	let top: { data: { node: AnimeDetail }[]; paging: { next: string; previous: string } };
@@ -30,34 +34,29 @@
 			{user}
 			title={'Seasonal Anime'}
 			anime={seasonal?.data.map((anime) => anime.node)}
+			route={`/anime?year=${seasonal.season.year}&season=${seasonal.season.season}`}
 		/>
 
 		<!-- Top -->
 		<TopContentList
 			{user}
 			categories={[
-				{ title: 'All', anime: top?.data.map((anime) => anime.node) },
-				{ title: 'Airing', anime: airing?.data.map((anime) => anime.node) },
-				{ title: 'Upcoming', anime: upcoming?.data.map((anime) => anime.node) }
+				{
+					title: 'All',
+					anime: top?.data.map((anime) => anime.node),
+					route: '/anime?ranking_type=all'
+				},
+				{
+					title: 'Airing',
+					anime: airing?.data.map((anime) => anime.node),
+					route: '/anime?ranking_type=airing'
+				},
+				{
+					title: 'Upcoming',
+					anime: upcoming?.data.map((anime) => anime.node),
+					route: '/anime?ranking_type=upcoming'
+				}
 			]}
 		/>
 	</div>
-
-	<!-- Airing -->
-	<!-- <ContentList
-		{user}
-		title={'Top Airing'}
-		anime={airing?.data.map((anime) => anime.node)}
-		prev={airing?.paging.previous}
-		next={airing?.paging.next}
-	/> -->
-
-	<!-- Upcoming -->
-	<!-- <ContentList
-		{user}
-		title={'Top Upcoming'}
-		anime={upcoming?.data.map((anime) => anime.node)}
-		next={upcoming?.paging.next}
-		prev={upcoming?.paging.previous}
-	/> -->
 </div>
