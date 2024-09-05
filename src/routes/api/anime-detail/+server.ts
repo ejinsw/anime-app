@@ -2,8 +2,16 @@ import { PUBLIC_MAL_CLIENT_ID } from '$env/static/public';
 import type { RequestHandler } from '@sveltejs/kit';
 import { json } from '@sveltejs/kit';
 
+import { throttle } from '$lib/middleware/throttle';
 
-export const GET: RequestHandler = async ({ url }) => {
+// Set throttling limit to 5 requests per minute (60 seconds)
+const limit = 5;
+const resetInterval = 60 * 1000;
+
+export const GET: RequestHandler = throttle(
+	limit,
+	resetInterval
+)(async ({ url }) => {
 	const animeId = url.searchParams.get('id');
 	if (!animeId) {
 		return new Response('Bad Request: Missing required parameters', { status: 400 });
@@ -34,4 +42,4 @@ export const GET: RequestHandler = async ({ url }) => {
 		console.log('Error retrieving seasonal anime', err);
 		return new Response('Server Error', { status: 500 });
 	}
-};
+});

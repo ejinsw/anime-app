@@ -7,7 +7,7 @@
 	import MaterialSymbolsArrowOutwardRounded from '~icons/material-symbols/arrow-outward-rounded';
 
 	export let anime: AnimeDetail[];
-	$: currAnime = anime[currIndex];
+	$: currAnime = anime && anime[currIndex] ? anime[currIndex] : null;
 	let currIndex = 0;
 	onMount(() => {
 		setInterval(() => {
@@ -64,7 +64,7 @@
 		<div
 			class="h-full w-full bg-[white] transition-transform duration-[500ms]
         ease-[cubic-bezier(0.65,0,0.35,1)]"
-			style={`transform: translateX(-${100 - (100 * (currIndex ?? 0)) / (anime.length - 1 ?? 1)}%)`}
+			style={`transform: translateX(-${100 - (100 * (currIndex ?? 0)) / (anime?.length - 1 ?? 1)}%)`}
 		/>
 	</div>
 </button>

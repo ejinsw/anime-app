@@ -1,8 +1,16 @@
 import { PUBLIC_MAL_CLIENT_ID } from '$env/static/public';
 import type { RequestHandler } from '@sveltejs/kit';
 import { json } from '@sveltejs/kit';
+import { throttle } from '$lib/middleware/throttle';
 
-export const GET: RequestHandler = async ({ fetch, url }) => {
+// Set throttling limit to 5 requests per minute (60 seconds)
+const limit = 5;
+const resetInterval = 60 * 1000;
+
+export const GET: RequestHandler = throttle(
+	limit,
+	resetInterval
+)(async ({ fetch, url }) => {
 	const query = url.searchParams.get('q');
 
 	if (!query) {
@@ -10,15 +18,12 @@ export const GET: RequestHandler = async ({ fetch, url }) => {
 	}
 
 	try {
-		const res = await fetch(
-			`https://api.myanimelist.net/v2/manga?q=${query}&limit=10`,
-			{
-				method: 'GET',
-				headers: {
-					'X-MAL-CLIENT-ID': PUBLIC_MAL_CLIENT_ID
-				}
+		const res = await fetch(`https://api.myanimelist.net/v2/manga?q=${query}&limit=10`, {
+			method: 'GET',
+			headers: {
+				'X-MAL-CLIENT-ID': PUBLIC_MAL_CLIENT_ID
 			}
-		);
+		});
 
 		if (!res.ok) {
 			return new Response('Failed to fetch anime list', { status: res.status });
@@ -30,4 +35,4 @@ export const GET: RequestHandler = async ({ fetch, url }) => {
 		console.log('Error retrieving seasonal anime', err);
 		return new Response('Server Error', { status: 500 });
 	}
-};
+});

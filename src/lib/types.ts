@@ -202,5 +202,3 @@ export interface AnimeStatistics {
 	num_times_rewatched: number;
 	mean_score: number;
 }
-
-export interface ListStatus

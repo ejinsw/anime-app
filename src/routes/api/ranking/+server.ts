@@ -1,8 +1,16 @@
 import { PUBLIC_MAL_CLIENT_ID } from '$env/static/public';
 import type { RequestHandler } from '@sveltejs/kit';
 import { json } from '@sveltejs/kit';
+import { throttle } from '$lib/middleware/throttle';
 
-export const GET: RequestHandler = async ({ fetch, url, cookies }) => {
+// Set throttling limit to 5 requests per minute (60 seconds)
+const limit = 1;
+const resetInterval = 1 * 1000;
+
+export const GET: RequestHandler = throttle(
+	limit,
+	resetInterval
+)(async ({ fetch, url, cookies }) => {
 	const rankingType = url.searchParams.get('ranking_type') || 'all';
 	const nsfw = url.searchParams.get('nsfw') || 'false';
 	const limit = parseInt(url.searchParams.get('limit') || '0', 10) || 10;
@@ -46,4 +54,4 @@ export const GET: RequestHandler = async ({ fetch, url, cookies }) => {
 		console.log('Error retrieving seasonal anime', err);
 		return new Response('Server Error', { status: 500 });
 	}
-};
+});
