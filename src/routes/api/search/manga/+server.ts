@@ -4,8 +4,8 @@ import { json } from '@sveltejs/kit';
 import { throttle } from '$lib/middleware/throttle';
 
 // Set throttling limit to 5 requests per minute (60 seconds)
-const limit = 5;
-const resetInterval = 60 * 1000;
+const limit = 1;
+const resetInterval = 1 * 1000;
 
 export const GET: RequestHandler = throttle(
 	limit,

@@ -4,7 +4,7 @@ import { DateToSeason } from '$lib/utils';
 export const load: PageServerLoad = async ({ fetch }) => {
 	const today = new Date();
 	let res = await fetch(
-		`/api/seasonal?year=${today.getFullYear()}&season=${DateToSeason(today)}&limit=30`
+		`/api/seasonal?year=${today.getFullYear()}&season=${DateToSeason(today)}&limit=20`
 	);
 
 	if (!res.ok) {

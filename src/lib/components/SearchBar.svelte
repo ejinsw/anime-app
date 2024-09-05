@@ -36,6 +36,13 @@
 	});
 
 	$: selectedCategory = $selectedLabel || 'Anime';
+	$: if (!searchQuery.length) results = [];
+
+	let timeout: number;
+	function handleInput() {
+		if (timeout) clearTimeout(timeout);
+		timeout = setTimeout(search, 300);
+	}
 
 	// Fetch search results based on the category and query
 	async function search() {
@@ -114,7 +121,7 @@
 			type="text"
 			placeholder="Search..."
 			bind:value={searchQuery}
-			on:input={search}
+			on:input={handleInput}
 			on:focus={() => (showResults = true)}
 			class="w-full pl-12 pr-4 py-2 border border-neutral-700 rounded-lg bg-neutral-800 text-white placeholder-neutral-500 focus:outline-none focus:ring focus:ring-blue-500"
 		/>
@@ -168,9 +175,7 @@
 	{:else if showResults && searchQuery && searchQuery.length >= 3 && !filteredResults.length}
 		{#if !results.length}
 			<!-- No results found -->
-			<div
-				class="mt-4 w-full rounded-lg bg-neutral-900 p-4 shadow-lg text-white absolute top-8"
-			>
+			<div class="mt-4 w-full rounded-lg bg-neutral-900 p-4 shadow-lg text-white absolute top-8">
 				<p>No results found for "{searchQuery}".</p>
 			</div>
 		{:else}

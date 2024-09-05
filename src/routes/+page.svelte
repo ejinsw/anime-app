@@ -22,7 +22,7 @@
 	$: upcoming = data.upcoming;
 
 	let bannerTitles: AnimeDetail[];
-	$: bannerTitles = data.seasonal?.data.map((anime: { node: AnimeDetail }) => anime.node);
+	$: bannerTitles = data.airing?.data.map((anime: { node: AnimeDetail }) => anime.node);
 </script>
 
 <div class="flex flex-col gap-y-8 max-w-screen">
@@ -39,6 +39,7 @@
 
 		<!-- Top -->
 		<TopContentList
+			class="hidden md:flex"
 			{user}
 			categories={[
 				{
