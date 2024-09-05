@@ -6,16 +6,15 @@ import {
 import { json, redirect, type RequestHandler } from '@sveltejs/kit';
 
 export const GET: RequestHandler = async ({ cookies, locals, url }) => {
+	const codeVerifier = url.searchParams.get('code_verifier');
+	const code = url.searchParams.get('code');
+
+	if (!code || code === 'null' || !codeVerifier) {
+		console.error('Missing code or codeVerifier');
+		throw redirect(302, '/')
+	}
+
 	try {
-		const codeVerifier = url.searchParams.get('code_verifier');
-		const code = url.searchParams.get('code');
-
-
-		if (!code || !codeVerifier) {
-			console.error('Missing code or codeVerifier');
-			return json({ message: 'Missing code or codeVerifier', status: 401 });
-		}
-
 		const params = new URLSearchParams({
 			client_id: PUBLIC_MAL_CLIENT_ID,
 			client_secret: PUBLIC_MAL_CLIENT_SECRET,

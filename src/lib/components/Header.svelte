@@ -2,6 +2,7 @@
 	import LoginButton from '$lib/components/LoginButton.svelte';
 	import SearchBar from '$lib/components/SearchBar.svelte';
 	import type { User } from '$lib/types';
+	import ProfileSelect from './ProfileSelect.svelte';
 
 	export let user: User | null = null;
 </script>
@@ -14,9 +15,11 @@
 		<span class="text-3xl font-sans">AniLink</span>
 	</a>
 	<SearchBar {user} />
+
+	
 	{#if !user}
 		<LoginButton class="ml-auto" />
 	{:else}
-		<div>{user.name}</div>
+		<ProfileSelect profile={user}/>
 	{/if}
 </header>

@@ -6,6 +6,7 @@
 	import { onMount } from 'svelte';
 	import { allow_nsfw } from '$lib/stores/stores';
 	import { navigating } from '$app/stores';
+	import Footer from '$lib/components/Footer.svelte';
 
 	export let data: LayoutData;
 
@@ -27,9 +28,12 @@
 
 <Header {user} />
 
-<main class="p-4 mt-16">
-	<slot />
-</main>
+
+	<main class="p-4 mt-16">
+		<slot />
+	</main>
+	<Footer />
+
 
 <NavBar {user} />
 
