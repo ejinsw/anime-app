@@ -102,10 +102,10 @@
 	</div>
 
 	<div
-	class="mt-4 flex flex-wrap w-full bg-[#111111] bg-opacity-90 backdrop-blur-lg backdrop-saturate-150 rounded-lg flex-col lg:flex-row"
+		class="mt-4 flex flex-wrap w-full bg-[#111111] bg-opacity-90 backdrop-blur-lg backdrop-saturate-150 rounded-lg flex-col lg:flex-row"
 	>
 		<!-- Scores Graph -->
-        <div class="grow shrink flex flex-col px-8 py-4 w-full lg:max-w-[50%]">
+		<div class="grow shrink flex flex-col px-8 py-4 w-full lg:max-w-[50%]">
 			<h1 class="text-xl font-bold">Score Distribution</h1>
 			<small class="text-sm font-semibold"
 				>{animeList.data.filter((item) => !item.list_status.score).length} unrated shows</small
@@ -157,8 +157,8 @@
 			/>
 		</div>
 
-        <!-- Genres Graph -->
-        <div class="grow shrink flex flex-col px-8 py-4 w-full lg:max-w-[50%]">
+		<!-- Genres Graph -->
+		<div class="grow shrink flex flex-col px-8 py-4 w-full lg:max-w-[50%]">
 			<h1 class="text-xl font-bold">Favorite Genres</h1>
 			<RadarChart
 				items={[
@@ -223,16 +223,23 @@
 				use:melt={$content(list.id)}
 				class="grow bg-[#111111] bg-opacity-90 backdrop-blur-lg backdrop-saturate-150 p-5"
 			>
-				<div
-					class="mx-auto w-fit gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 {$value ===
-					list.id
-						? 'grid'
-						: 'hidden'}"
-				>
-					{#each list.items as anime}
-						<PreviewCard {user} anime={anime.node} listStatus={anime.list_status} class="" />
-					{/each}
-				</div>
+				{#if list.items && list.items.length !== 0}
+					<div
+						class="mx-auto w-fit gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 {$value ===
+						list.id
+							? 'grid'
+							: 'hidden'}"
+					>
+						{#each list.items as anime}
+							<PreviewCard {user} anime={anime.node} listStatus={anime.list_status} class="" />
+						{/each}
+					</div>
+				{:else}
+					<div class="flex flex-col justify-center items-center h-80 text-lg gap-4">
+						<div>Add Titles to your Profile.</div>
+						<a href="/anime" class="rounded-lg bg-magnum-500 px-2 py-2 text-lg">Explore</a>
+					</div>
+				{/if}
 			</div>
 		{/each}
 	</div>

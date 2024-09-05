@@ -39,6 +39,6 @@
 		class="fixed top-0 left-0 w-screen h-screen bg-black/70 z-50 flex justify-center items-center"
 	>
 		<!-- <l-bouncy size="45" speed="1.75" color="white"></l-bouncy> -->
-		<l-jelly size="40" speed="0.9" color="#44FF00"></l-jelly>
+		<l-jelly size="40" speed="0.9" color="rgb(247 177 85)"></l-jelly>
 	</div>
 {/if}
