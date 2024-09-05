@@ -1,6 +1,7 @@
 <script lang="ts">
 	import BarChart from '$lib/components/BarChart.svelte';
 	import PreviewCard from '$lib/components/Preview/PreviewCard.svelte';
+	import RadarChart from '$lib/components/RadarChart.svelte';
 	import type { AnimeDetail, AnimeStatus, User } from '$lib/types';
 	import { scoreToColor } from '$lib/utils';
 	import { createTabs, melt } from '@melt-ui/svelte';
@@ -100,62 +101,113 @@
 		</span>
 	</div>
 
-	<div>
-		<BarChart
-			items={[
-				{
-					label: `1`,
-					value: animeList.data.filter((item) => item.list_status.score === 1).length
-				},
-				{
-					label: `2`,
-					value: animeList.data.filter((item) => item.list_status.score === 2).length
-				},
-				{
-					label: `3`,
-					value: animeList.data.filter((item) => item.list_status.score === 3).length
-				},
-				{
-					label: `4`,
-					value: animeList.data.filter((item) => item.list_status.score === 4).length
-				},
-				{
-					label: `5`,
-					value: animeList.data.filter((item) => item.list_status.score === 5).length
-				},
-				{
-					label: `6`,
-					value: animeList.data.filter((item) => item.list_status.score === 6).length
-				},
-				{
-					label: `7`,
-					value: animeList.data.filter((item) => item.list_status.score === 7).length
-				},
-				{
-					label: `8`,
-					value: animeList.data.filter((item) => item.list_status.score === 8).length
-				},
-				{
-					label: `9`,
-					value: animeList.data.filter((item) => item.list_status.score === 9).length
-				},
-				{
-					label: `10`,
-					value: animeList.data.filter((item) => item.list_status.score === 10).length
-				}
-			]}
-		/>
+	<div
+	class="mt-4 flex flex-wrap w-full bg-[#111111] bg-opacity-90 backdrop-blur-lg backdrop-saturate-150 rounded-lg flex-col lg:flex-row"
+	>
+		<!-- Scores Graph -->
+        <div class="grow shrink flex flex-col px-8 py-4 w-full lg:max-w-[50%]">
+			<h1 class="text-xl font-bold">Score Distribution</h1>
+			<small class="text-sm font-semibold"
+				>{animeList.data.filter((item) => !item.list_status.score).length} unrated shows</small
+			>
+			<BarChart
+				class="w-full"
+				items={[
+					{
+						label: `1`,
+						value: animeList.data.filter((item) => item.list_status.score === 1).length
+					},
+					{
+						label: `2`,
+						value: animeList.data.filter((item) => item.list_status.score === 2).length
+					},
+					{
+						label: `3`,
+						value: animeList.data.filter((item) => item.list_status.score === 3).length
+					},
+					{
+						label: `4`,
+						value: animeList.data.filter((item) => item.list_status.score === 4).length
+					},
+					{
+						label: `5`,
+						value: animeList.data.filter((item) => item.list_status.score === 5).length
+					},
+					{
+						label: `6`,
+						value: animeList.data.filter((item) => item.list_status.score === 6).length
+					},
+					{
+						label: `7`,
+						value: animeList.data.filter((item) => item.list_status.score === 7).length
+					},
+					{
+						label: `8`,
+						value: animeList.data.filter((item) => item.list_status.score === 8).length
+					},
+					{
+						label: `9`,
+						value: animeList.data.filter((item) => item.list_status.score === 9).length
+					},
+					{
+						label: `10`,
+						value: animeList.data.filter((item) => item.list_status.score === 10).length
+					}
+				]}
+			/>
+		</div>
+
+        <!-- Genres Graph -->
+        <div class="grow shrink flex flex-col px-8 py-4 w-full lg:max-w-[50%]">
+			<h1 class="text-xl font-bold">Favorite Genres</h1>
+			<RadarChart
+				items={[
+					{
+						label: `Action`,
+						value: animeList.data.filter((item) =>
+							item.node.genres?.some((genre) => genre.name === 'Action')
+						).length
+					},
+					{
+						label: `Fantasy`,
+						value: animeList.data.filter((item) =>
+							item.node.genres?.some((genre) => genre.name === 'Fantasy')
+						).length
+					},
+					{
+						label: `Drama`,
+						value: animeList.data.filter((item) =>
+							item.node.genres?.some((genre) => genre.name === 'Drama')
+						).length
+					},
+					{
+						label: `Comedy`,
+						value: animeList.data.filter((item) =>
+							item.node.genres?.some((genre) => genre.name === 'Comedy')
+						).length
+					},
+					{
+						label: `Supernatural`,
+						value: animeList.data.filter((item) =>
+							item.node.genres?.some((genre) => genre.name === 'Supernatural')
+						).length
+					}
+				]}
+			/>
+		</div>
 	</div>
 
 	<div use:melt={$root} class="flex flex-col w-full overflow-hidden rounded-xl shadow-lg mt-5">
 		<div
 			use:melt={$list}
-			class="flex shrink-0 w-full bg-neutral-100 text-black gap-4 overflow-x-auto"
+			class="flex shrink-0 w-full bg-neutral-900 shadow-lg backdrop-blur-lg backdrop-saturate-150 text-white gap-4 overflow-x-auto"
 		>
 			{#each userLists as list}
 				<button
 					use:melt={$trigger(list.id)}
-					class="{$value === list.id ? 'bg-white' : ''} relative px-4 py-2 flex-auto min-w-fit"
+					class="{$value === list.id
+						? 'bg-neutral-800 backdrop-blur-lg backdrop-saturate-150'
+						: ''} relative px-4 py-2 flex-auto min-w-fit"
 				>
 					{list.name}
 					{#if $value === list.id}
@@ -167,7 +219,10 @@
 			{/each}
 		</div>
 		{#each userLists as list}
-			<div use:melt={$content(list.id)} class="grow bg-white p-5">
+			<div
+				use:melt={$content(list.id)}
+				class="grow bg-[#111111] bg-opacity-90 backdrop-blur-lg backdrop-saturate-150 p-5"
+			>
 				<div
 					class="mx-auto w-fit gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 {$value ===
 					list.id
@@ -175,12 +230,7 @@
 						: 'hidden'}"
 				>
 					{#each list.items as anime}
-						<PreviewCard
-							{user}
-							anime={anime.node}
-							listStatus={anime.list_status}
-							class="text-neutral-800"
-						/>
+						<PreviewCard {user} anime={anime.node} listStatus={anime.list_status} class="" />
 					{/each}
 				</div>
 			</div>
