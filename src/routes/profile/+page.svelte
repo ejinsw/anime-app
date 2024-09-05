@@ -225,13 +225,13 @@
 			>
 				{#if list.items && list.items.length !== 0}
 					<div
-						class="mx-auto w-fit gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 {$value ===
+						class="mx-auto w-fit gap-4 flex-wrap {$value ===
 						list.id
-							? 'grid'
+							? 'flex'
 							: 'hidden'}"
 					>
 						{#each list.items as anime}
-							<PreviewCard {user} anime={anime.node} listStatus={anime.list_status} class="" />
+							<PreviewCard {user} anime={anime.node} listStatus={anime.list_status} size="md" class="mx-auto" />
 						{/each}
 					</div>
 				{:else}

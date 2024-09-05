@@ -2,7 +2,7 @@
 </script>
 
 <footer
-	class="w-full h-fit bg-[#1c1c1c] shadow-lg flex gap-16 px-8 py-6 box-border"
+	class="w-full h-fit bg-[#1c1c1c] shadow-lg flex gap-16 px-4 py-4 box-border"
 >
 	<div class="flex flex-col">
 		<div class="w-fit h-fit flex items-end gap-2">

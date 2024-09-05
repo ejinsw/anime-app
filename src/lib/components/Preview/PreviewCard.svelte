@@ -28,14 +28,14 @@
 	let status: string = listStatus?.status ?? '';
 
 	let sizeClasses = {
-		sm: 'w-12',
-		md: 'w-32',
+		sm: 'w-40',
+		md: 'w-44',
 		lg: 'w-48'
 	};
 
 	let maxImgH = {
-		sm: 'h-20',
-		md: 'h-48',
+		sm: 'h-46',
+		md: 'h-60',
 		lg: 'h-64'
 	};
 	
