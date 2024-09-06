@@ -6,6 +6,9 @@
 	import CarbonUserAvatar from '~icons/carbon/user-avatar';
 	import { createPopover, createSwitch, melt } from '@melt-ui/svelte';
 
+	import IcRoundKeyboardArrowRight from '~icons/ic/round-keyboard-arrow-right';
+	import IcRoundKeyboardArrowLeft from '~icons/ic/round-keyboard-arrow-left';
+
 	import OutClick from 'svelte-outclick';
 	import { allow_nsfw } from '$lib/stores/stores';
 	import { page } from '$app/stores';
@@ -15,7 +18,8 @@
 	let button: HTMLElement, pane: HTMLElement;
 
 	$: active = $page.url.pathname;
-	let nsfwEnabled = false;
+
+	let isOpen = false;
 
 	const paths = [
 		{
@@ -66,29 +70,36 @@
 />
 
 <div
-	class={`z-50 flex justify-center items-center text-lg fixed bottom-6 left-1/2 transform -translate-x-1/2 border border-[#1c1c1c] bg-[#111111] bg-opacity-90 backdrop-blur-lg backdrop-saturate-150 rounded-full px-4 py-2 shadow-xl transition-all duration-300 ease-in-out w-fit`}
+	class={`z-50 flex justify-center items-center text-lg fixed  transform -translate-x-1/2 
+	border border-[#1c1c1c] bg-[#111111] bg-opacity-90 backdrop-blur-lg backdrop-saturate-150 
+	rounded-full px-4 py-2 shadow-xl transition-all duration-300 ease-in-out w-fit ${isOpen ? 'bottom-6 left-1/2' : 'bottom-6 left-0'}`}
 >
-	<div class={`flex gap-6 text-white transition-opacity duration-300 ease-in-out w-fit`}>
-		{#each paths as route}
-			<a
-				href={route.path}
-				class={`flex items-center justify-center px-4 py-2 rounded-full w-fit transition-all ${active === route.path ? 'bg-neutral-700/80 border border-neutral-600' : ''}`}
-			>
-				<svelte:component this={route.icon} />
-			</a>
-		{/each}
-	</div>
+	{#if isOpen}
+		<button on:click={() => (isOpen = false)} class=""><IcRoundKeyboardArrowLeft /></button>
+		<div class={`flex gap-6 text-white transition-opacity duration-300 ease-in-out w-fit`}>
+			{#each paths as route}
+				<a
+					href={route.path}
+					class={`flex items-center justify-center px-4 py-2 rounded-full w-fit transition-all ${active === route.path ? 'bg-neutral-700/80 border border-neutral-600' : ''}`}
+				>
+					<svelte:component this={route.icon} />
+				</a>
+			{/each}
+		</div>
 
-	<div class="ml-12 flex items-center justify-center w-fit">
-		<button
-			bind:this={button}
-			use:melt={$trigger}
-			type="button"
-			class="flex items-center justify-center p-2 rounded-full bg-neutral-700/80 border border-neutral-600 hover:bg-neutral-500 transition-all"
-		>
-			<FluentGridDots20Regular class="text-sm" />
-		</button>
-	</div>
+		<div class="ml-12 flex items-center justify-center w-fit">
+			<button
+				bind:this={button}
+				use:melt={$trigger}
+				type="button"
+				class="flex items-center justify-center p-2 rounded-full bg-neutral-700/80 border border-neutral-600 hover:bg-neutral-500 transition-all"
+			>
+				<FluentGridDots20Regular class="text-sm" />
+			</button>
+		</div>
+	{:else}
+		<button on:click={() => (isOpen = true)} class="ml-8"><IcRoundKeyboardArrowRight /></button>
+	{/if}
 </div>
 
 {#if $open}

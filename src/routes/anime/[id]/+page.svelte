@@ -98,7 +98,7 @@
 			<h2 class="text-2xl font-semibold mb-4">Recommendations</h2>
 			<ul class="flex gap-4 overflow-x-auto">
 				{#each detail?.recommendations as recommendation}
-					<li class="flex flex-col items-center text-center w-32">
+					<li class="flex flex-col items-center text-center w-fit">
 						<PreviewCard anime={recommendation.node} size="md" />
 						<p class="text-xs text-gray-500">
 							{recommendation.num_recommendations} recommendations
