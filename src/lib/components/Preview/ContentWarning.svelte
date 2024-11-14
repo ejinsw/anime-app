@@ -30,6 +30,6 @@
 {#if $open}
 	<div use:melt={$content} class="bg-neutral-600 text-white px-2 py-1 rounded-lg">
 		<div use:melt={$arrow} />
-		Content warning
+		Possible content warning
 	</div>
 {/if}

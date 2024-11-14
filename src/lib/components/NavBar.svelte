@@ -87,7 +87,7 @@
 			{/each}
 		</div>
 
-		<div class="ml-12 flex items-center justify-center w-fit">
+		<!-- <div class="ml-12 flex items-center justify-center w-fit">
 			<button
 				bind:this={button}
 				use:melt={$trigger}
@@ -96,7 +96,7 @@
 			>
 				<FluentGridDots20Regular class="text-sm" />
 			</button>
-		</div>
+		</div> -->
 	{:else}
 		<button on:click={() => (isOpen = true)} class="ml-8"><IcRoundKeyboardArrowRight /></button>
 	{/if}
@@ -109,7 +109,7 @@
 		class="flex flex-col z-10 rounded-lg bg-[#1c1c1c] w-fit shadow-lg bg-opacity-80 backdrop-blur-lg backdrop-saturate-150 p-4 text-sm text-neutral-400"
 	>
 		<div use:melt={$arrow} />
-		<div class="flex items-center gap-2">
+		<!-- <div class="flex items-center gap-2">
 			<span>NSFW</span>
 			<button
 				use:melt={$root}
@@ -126,6 +126,6 @@
 				/>
 			</button>
 			<input type="checkbox" use:melt={$input} class="hidden" />
-		</div>
+		</div> -->
 	</div>
 {/if}

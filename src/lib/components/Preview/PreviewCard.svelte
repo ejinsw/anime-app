@@ -158,7 +158,7 @@
 				class="absolute flex flex-col justify-center items-center left-0 top-0 w-full h-full text-sm p-1"
 			>
 				<h1 class="text-lg">Content Warning!</h1>
-				<p class="mt-4 text-xs">Enable NSFW to View</p>
+				<!-- <p class="mt-4 text-xs">Enable NSFW to View</p> -->
 			</span>
 		</div>
 	{/if}
